@@ -9,7 +9,7 @@
 - 本プロジェクトはほぼ全自動開発で進行する
 - ユーザーへの確認は重要判断のみに限定する
 - 軽微な技術的判断はClaude Codeが自律的に行う
-- すべての成果物はdocs/配下にMarkdownで出力する
+- ANMS形式の仕様書はspec/配下に出力する。その他の成果物はdocs/配下にMarkdownで出力する
 - コードはsrc/配下、テストはtests/配下、IaCはinfra/配下に配置する
 
 ## 技術スタック
@@ -63,7 +63,7 @@
 ## APIドキュメント
 
 - OpenAPI 3.0形式で docs/api/ に出力する
-- architect エージェントがSWS作成と同時に生成する
+- architect エージェントがANMS仕様書 Ch3 詳細化と同時に生成する
 - 実装完了後 test-engineer がエンドポイントとの整合性を検証する
 
 ## 可観測性要件
@@ -77,8 +77,8 @@
 
 Agent Teamsで作業する場合、以下のロール定義を使用する:
 
-- **SRS Agent**: docs/srs/ に要求仕様を作成。ユーザーコンセプトを構造化する
-- **Architect Agent**: docs/sws/ にソフトウェア仕様を作成。docs/api/ にOpenAPI仕様を生成する
+- **SRS Agent**: spec.md（3問形式）+ anms-template/ を基に、ANMS形式の仕様書を spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
+- **Architect Agent**: spec/ の ANMS 仕様書 Ch3-6 を詳細化（Architecture・Specification・Test Strategy・Design Principles）。docs/api/ にOpenAPI仕様を生成する
 - **Security Agent**: docs/security/ にセキュリティ設計を作成。実装コードの脆弱性レビューを行う
 - **Implementation Agent**: src/ 配下にコードを実装する。設計文書に従う
 - **Test Agent**: tests/ 配下にテストを作成・実行する。カバレッジレポートを生成する
@@ -108,7 +108,7 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 
 ## 必須プロセス設定（第6章参照）
 
-- 変更管理: SRS承認後の変更はchange-managerエージェント経由で処理する
+- 変更管理: 仕様書承認後の変更はchange-managerエージェント経由で処理する
 - リスク管理: Phase 1完了時にリスク台帳を作成し、各フェーズ開始時に更新する
 - トレーサビリティ: 要件ID→設計ID→テストIDの対応をdocs/traceability/に記録する
 - 問題管理: バグはdocs/defects/に障害票として記録し、根本原因分析を行う
