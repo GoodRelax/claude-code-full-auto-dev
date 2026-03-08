@@ -1,6 +1,6 @@
-# ANMS大規模スケーリング論文 先行調査・価値評価レポート
+# ANGS (AI-Native Graph Spec) 論文 先行調査・価値評価レポート
 
-**調査対象:** `big-anms-essay-ja.md` — "ANMS大規模スケーリング — グラフ構造による仕様管理とエージェント協調"
+**調査対象:** `angs-essay-ja.md` — "ANGS (AI-Native Graph Spec) — グラフ構造による仕様管理とエージェント協調"
 **前提:** ANMS v0.33（第1論文）の続編・拡張論文として位置づけられている
 **調査日:** 2026-03-08
 
@@ -8,7 +8,7 @@
 
 ## 1. 調査の前提と制約
 
-本レポートは `big-anms-essay-ja.md` の全文を直接精読し、以下の観点で先行調査を実施した。
+本レポートは `angs-essay-ja.md` の全文を直接精読し、以下の観点で先行調査を実施した。
 
 - GraphDB × 仕様管理の先行研究
 - CQRS / Event Sourcing の確立された先行技術との比較
@@ -269,14 +269,14 @@ graph TD
     end
 
     subgraph This_Paper["本論文の位置"]
-        BigANMS["ANMS大規模スケーリング<br/>圏論 × 工学パターン × エージェント協調<br/>の統合設計論"]:::anms
+        ANGS_pos["ANGS<br/>圏論 × 工学パターン × エージェント協調<br/>の統合設計論"]:::anms
     end
 
-    CT_Spec -->|圏論の概念を継承| BigANMS
-    CQRS_ES -->|CQRSを適用| BigANMS
-    CA -->|DIPを適用| BigANMS
-    GraphRAG -->|GraphDB + LLM方向が一致| BigANMS
-    Codified -->|問題意識が一致| BigANMS
+    CT_Spec -->|圏論の概念を継承| ANGS_pos
+    CQRS_ES -->|CQRSを適用| ANGS_pos
+    CA -->|DIPを適用| ANGS_pos
+    GraphRAG -->|GraphDB + LLM方向が一致| ANGS_pos
+    Codified -->|問題意識が一致| ANGS_pos
 
     classDef formal fill:#8e44ad,stroke:#333,color:#fff
     classDef pattern fill:#2e86c1,stroke:#333,color:#fff

@@ -1,4 +1,4 @@
-# big-anms-essay-ja.md 改善案
+# angs-essay-ja.md 改善案
 
 ## 改善の方針
 
