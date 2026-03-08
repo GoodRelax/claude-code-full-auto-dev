@@ -1,9 +1,12 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(ls \"C:\\\\Users\\\\good_\\\\.claude\\\\projects\\\\c--Users-good--OneDrive-Documents-GitHub-claude-code-full-auto-dev\\\\memory\"\" 2>/dev/null || echo \"directory not found \")"
+    ],
     "deny": [],
     "additionalDirectories": [
-      "c:\\Users\\good_\\OneDrive\\Documents\\GitHub\\claude-code-full-auto-dev\\docs"
+      "c:\\Users\\good_\\OneDrive\\Documents\\GitHub\\claude-code-full-auto-dev\\docs",
+      "C:\\Users\\good_\\.claude\\projects\\c--Users-good--OneDrive-Documents-GitHub-claude-code-full-auto-dev"
     ]
   },
   "model": "claude-sonnet-4-6"

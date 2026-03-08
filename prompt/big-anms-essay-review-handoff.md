@@ -1,0 +1,86 @@
+# 引継ぎ: big-anms-essay-ja.md レビュー結果の確認とブラッシュアップ
+
+## 1. 背景
+
+ANMS（AI-Native Minimal Spec）を大規模SWに適用するための設計論文を執筆した。論文は以下のファイルにある：
+
+- **論文本体:** `anms-template/big-anms-essay-ja.md`
+- **レビュー結果:** `anms-template/claude-chat-review.md`
+
+## 2. 論文の構成（現状）
+
+| 章 | タイトル | 内容 |
+|---|---|---|
+| 1 | はじめに — ANMSの限界 | 単一仕様書前提の破綻。2つの課題（コンテキストサイズ、大規模仕様群管理） |
+| 2 | 設計原則 | 4原則: DIP, 三圏三角関係, MDはビュー, CQRS |
+| 3 | グラフスキーマ | 抽象→具体の2層構造。SpecNode/SpecEdge。STFB×CA依存方向の統一 |
+| 4 | 認知操作 | 4ペア: 分割/命名→類比/対比→帰納/演繹→具体/抽象（この順序が重要） |
+| 5 | 解決策 | オーガナイザーによるコンテキスト配分。主要アルゴリズム |
+| 6 | 考察 | プログラミング史における位置づけ（マシン語→C→...→AI Code） |
+| 7 | 結論 | 4原則+スキーマ+エージェント協調の要約 |
+
+## 3. レビューで指摘された主要課題
+
+レビュー（`claude-chat-review.md`）で挙がった課題は以下：
+
+### 高優先度
+1. **実証データの不在** — 設計論のみで実装検証がない。次のステップを明示すべき
+2. **CQRSの複雑性** — Fowlerの警告「ほとんどのシステムでは過剰」への応答が必要
+3. **圏論の厳密性の曖昧さ** — 概念化ツールか形式的保証か、立場を明確にすべき
+4. **Gitを Event Store として扱う意味論的ズレ** — ドメインイベントとコミットの粒度差
+
+### 中優先度
+5. **「MDはビュー」と現状ツールの乖離** — 現行AIエージェントはMD入力前提
+6. **第1論文との非連続性** — MD中心→G×V中心への転換の扱い
+
+### 評価された強み（変えない）
+- 問題設定の誠実さ（第1論文の限界を自己批判）
+- 可換条件 $F \circ H \cong J$ の実用的定式化
+- STFB×CA統一のスキーマ埋め込み
+- 忘却関手＝コンテキスト最小化の独自性
+- プログラミング史の抽象化段階論
+
+## 4. 関連ファイル一覧
+
+| ファイル | 内容 |
+|---|---|
+| `anms-template/big-anms-essay-ja.md` | 論文本体（MCBSMD形式） |
+| `anms-template/claude-chat-review.md` | レビュー結果（先行調査・価値評価） |
+| `anms-template/anms-essay-ja.md` | 第1論文（ANMS原論文） |
+| `anms-template/research/anms-graph-schema.md` | グラフスキーマ定義（詳細版） |
+| `anms-template/research/category-theory-anms-report-v2.md` | 圏論レポートv2 |
+| `anms-template/research/anms-scaling-key-points.md` | 要点整理 |
+| `CLAUDE.md` | プロジェクト設定（MCBSMD形式、命名規則含む） |
+
+## 5. 厳守ルール
+
+### 命名（言霊の原則）
+- `type`, `data`, `info`, `value`, `item`, `result`, `status`（単体）は禁止
+- 名前は「それが何か」をドメインで限定する（例: `edge_kind`, `decision_status`）
+- 詳細: `memory/naming.md`
+
+### MCBSMD形式
+- 全体を6バッククォートで囲む
+- 図・コードは3バッククォートで言語指定
+- 各ブロックの前に `**タイトル:**` を付ける
+- Mermaidでは特殊記号禁止、全矢印にラベル必須
+
+### Mermaid定義順
+- 安定層（上位/内側）を先に定義する
+- エッジも安定層向きの順から書く
+- flowchartの方向: 安定が上（BT）or 左（RL）
+
+### CAの依存方向
+- 全てのエッジは外側（柔軟）→内側（安定）。CAのDIPに従う
+- source = 依存する側（外側）、target = 依存される側（内側）
+- forward: source.stfb_layer >= target.stfb_layer
+
+### 認知操作の順序
+- 分割/命名 → 類比/対比 → 帰納/演繹 → 具体/抽象（この直列チェーンが正しい順序。ファンアウトではない）
+
+## 6. やること
+
+1. `claude-chat-review.md` を読む
+2. `big-anms-essay-ja.md` を読む
+3. レビュー指摘（特に高優先度の4点）への対応方針をユーザーと相談する
+4. 論文をブラッシュアップする
