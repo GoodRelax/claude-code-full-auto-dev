@@ -5,7 +5,7 @@
 
 ## Abstract
 
-AI-Native Minimal Spec (ANMS) was designed under the assumption that a single specification document fits within an AI's context window. However, this assumption breaks down for large-scale software. This paper proposes "ANGS (AI-Native Graph Spec)," a design for managing large-scale specifications while preserving the ANMS hierarchical structure (STFB). The core is distilled into four design principles: (1) Conceptualize the three elements — Markdown, GraphDB, and Git — as a triangular relationship using category theory. (2) Markdown is not an intermediary but a view. (3) GraphDB requires no versioning capability; Git serves as version management while GraphDB serves as the structural reference. (4) GraphDB is merely a Framework layer in Clean Architecture, made replaceable via DIP. Based on these principles, we define a graph schema that unifies STFB layers with Clean Architecture's dependency direction, and present a mechanism for context minimization via the forgetful functor and subgraph extraction by an organizer agent.
+AI-driven development specifications form a three-level hierarchy scaled by project size. ANMS (AI-Native Minimal Spec: single file), ANPS (AI-Native Plural Spec: multiple file split), and ANGS (AI-Native Graph Spec: GraphDB-based) — all sharing the STFB (Stable Top, Flexible Bottom) design principle. ANMS targets scales that fit in a single context window; ANPS handles medium-scale projects that do not fit but do not require GraphDB [1]. This paper proposes ANGS, the third level. The Markdown linear structure of ANMS and ANPS cannot manage specification element dependencies at large scale. ANGS preserves the ANMS hierarchical structure (STFB) while managing large-scale specifications. The core is distilled into four design principles: (1) Conceptualize the three elements — Markdown, GraphDB, and Git — as a triangular relationship using category theory. (2) Markdown is not an intermediary but a view. (3) GraphDB requires no versioning capability; history management is delegated to Git. (4) GraphDB is merely a Framework layer in Clean Architecture, made replaceable via DIP. Based on these principles, we define a graph schema that unifies STFB layers with Clean Architecture's dependency direction, and present a mechanism for context minimization via the forgetful functor and subgraph extraction by an organizer agent.
 
 ## Keywords
 
@@ -19,7 +19,7 @@ ANGS, ANMS, STFB, GraphDB, Category Theory, Clean Architecture, CQRS, Multi-Agen
 
 ANMS (AI-Native Minimal Spec) is a specification template for AI-driven development [1]. Its chapter structure follows STFB (Stable Top, Flexible Bottom), which structurally controls the propagation of changes. It combines EARS, Gherkin, and Mermaid in a hybrid notation to achieve both logical rigor and visual design synchronization.
 
-ANMS is optimized for small-to-medium-scale software. Its design assumption is that "a single specification document fits within an AI's context window."
+ANMS is optimized for small-to-medium-scale software. Its design assumption is that "a single specification document fits within an AI's context window." For medium-scale projects, ANPS (AI-Native Plural Spec) extends this assumption through multiple file splitting, but still relies on Markdown's linear structure.
 
 ### 1.2 Challenges in Large-Scale Software
 
@@ -47,14 +47,14 @@ At large scale, Markdown's linear structure cannot adequately express dependenci
 
 The internal structure of specifications — namely the STFB hierarchical composition and Clean Architecture's dependency direction — remains identical to the first paper. The principle "flexible lower layers depend on stable upper layers," which was expressed through Markdown's chapter structure, is reimplemented as `direction` constraints (forward / trace / meta) in the graph schema. The vessel changes, but the structure within the vessel does not.
 
-| Aspect                     | First Paper (ANMS)                          | This Paper (ANGS)                                          |
-| -------------------------- | ------------------------------------------- | ---------------------------------------------------------- |
-| Representation medium      | Single Markdown file                        | GraphDB + Git (MD is a view)                               |
-| Internal spec structure    | STFB × CA dependency direction              | STFB × CA dependency direction (identical)                 |
-| Applicable scale           | Scale that fits in a single context window   | Scale that does not fit                                    |
-| Relationship               | —                                           | An alternative that raises abstraction level (not opposed)  |
+| Aspect                     | ANMS (First Paper)                          | ANPS                                              | ANGS (This Paper)                                          |
+| -------------------------- | ------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| Representation medium      | Single Markdown file                        | Multiple Markdown files + Common Block            | GraphDB + Git (MD is a view)                               |
+| Internal spec structure    | STFB × CA dependency direction              | STFB × CA dependency direction (identical)        | STFB × CA dependency direction (identical)                 |
+| Applicable scale           | Scale that fits in a single context window   | Does not fit, but no GraphDB needed (medium-scale)| Large-scale                                                |
+| Relationship               | —                                           | File-split extension of ANMS                      | An alternative that raises abstraction level (not opposed)  |
 
-The two are used according to scale.
+The three are used according to scale. ANPS fills the gap between ANMS and ANGS as an intermediate level, handling medium-scale projects through Common Block-based file management and chapter splitting (spec-foundation / spec-architecture).
 
 ---
 

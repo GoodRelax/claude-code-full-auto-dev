@@ -4,6 +4,8 @@
 
 The rapid evolution of Large Language Models (LLMs) is shifting software development from an era where humans write code to one where AI interprets specifications and generates code. However, traditional heavyweight specifications are redundant for AI, while fragmented instructions lead to "context loss" that undermines system-wide consistency. This paper proposes a new specification template called "AI-Native Minimal Spec (ANMS)" — a shared design foundation for humans and AI that enables near-fully-automated development. ANMS adopts a chapter structure called "STFB (Stable Top, Flexible Bottom)" based on the Stable Dependencies Principle, and combines EARS, Gherkin, and Mermaid to achieve both logical rigor and visual design synchronization. The goal is to maximize human review efficiency and AI implementation accuracy.
 
+This proposal is positioned as the first level of a three-level specification hierarchy scaled by project size. The three levels are: ANMS (single file, fits in one context window), ANPS (AI-Native Plural Spec: multiple file split, medium-scale), and ANGS (AI-Native Graph Spec: GraphDB-based, large-scale) [2]. All three share the STFB design principle. This paper defines ANMS and also describes the scaling path to ANPS and ANGS.
+
 ## Keywords
 
 LLM-driven Development, AI-Native Specification, Requirements Engineering, EARS, Gherkin, Mermaid, STFB, Human-in-the-Loop
@@ -174,6 +176,30 @@ $$
 
 Here, $Valid(r)$ means "a state where AI can implement without ambiguity and can automatically determine correctness." EARS ensures "unambiguity ( $Unambiguous$ )" and Gherkin ensures "verifiability ( $Verifiable$ )," satisfying this mathematical condition and enabling automatic verification of AI-generated code correctness. Ch6's Design Principles Compliance functions as a complementary layer, ensuring that implementations generated from these valid requirements are also engineeringly sound.
 
+## Scaling: Three-Level Spec Hierarchy
+
+ANMS was designed under the assumption that the specification fits in a single context window. For projects where this assumption breaks down, we define a three-level scaling path.
+
+| Level | Abbreviation | Full Name | Representation | Scale |
+|:-----:|------|----------|------|------|
+| 1 | ANMS | AI-Native Minimal Spec | Single Markdown file | Fits in one context window |
+| 2 | ANPS | AI-Native Plural Spec | Multiple Markdown files + Common Block | Does not fit, no GraphDB needed |
+| 3 | ANGS | AI-Native Graph Spec | GraphDB + Git (MD is a view) | Large-scale |
+
+**Design principles shared across all three levels:**
+
+- All levels share the STFB (Stable Top, Flexible Bottom) chapter structure
+- Each upper level is an extension of the lower level, not a replacement
+- The appropriate level is selected at project start based on scale assessment
+
+**ANPS (Level 2) Overview:**
+
+ANPS preserves the STFB structure of ANMS while splitting chapters into separate files. The split boundary follows ownership: spec-foundation (Ch1-2: created by srs-writer) and spec-architecture (Ch3-6: elaborated by architect). Each file carries a Common Block (document identification, state, workflow) and Form Block (type-specific structured fields) to ensure agent coordination through document structure.
+
+**ANGS (Level 3) Overview:**
+
+ANGS moves the specification body from Markdown to GraphDB, redefining Markdown as a view. It conceptualizes Markdown, GraphDB, and Git as a triangular categorical relationship and achieves context minimization via the forgetful functor. See [2] for details.
+
 ## Conclusion
 
 This paper proposed the "ANMS" template for near-fully-automated AI development. The STFB (Stable Top, Flexible Bottom) chapter structure provides structural control over change blast radius, while the EARS / Gherkin / Mermaid hybrid notation enables specification in the optimal format for each layer. The 6-chapter structure (Foundation / Requirements / Architecture / Specification / Test Strategy / Design Principles Compliance) covers the full lifecycle of definition, design, verification, and quality assurance while remaining concise enough to fit within AI context windows. By operating this format as "Living Documentation," it enables development that is resilient to specification changes and maximizes the accuracy of AI-generated implementations.
@@ -181,13 +207,14 @@ This paper proposed the "ANMS" template for near-fully-automated AI development.
 ## References
 
 1. Martin, R.C. "[The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)" — Stable Dependencies Principle (SDP), Stable Abstractions Principle (SAP)
-2. Mavin, A., et al. "[EARS: Easy Approach to Requirements Syntax](https://ieeexplore.ieee.org/document/5328509)" — IEEE, 2009
-3. Cucumber. "[Gherkin Reference](https://cucumber.io/docs/gherkin/reference/)"
-4. Starke, G. "[arc42 Architecture Template](https://arc42.org/)"
-5. ISO/IEC/IEEE. "[29148:2018 — Requirements Engineering](https://www.iso.org/standard/72089.html)"
-6. Bradner, S. "[RFC 2119 — Key words for use in RFCs to Indicate Requirement Levels](https://datatracker.ietf.org/doc/html/rfc2119)" — IETF, 1997
-7. Leiba, B. "[RFC 8174 — Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words](https://datatracker.ietf.org/doc/html/rfc8174)" — IETF, 2017
-8. Nygard, M. "[Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)" — ADR format reference
+2. ANGS (AI-Native Graph Spec) — Specification Management and Agent Coordination via Graph Structure (angs-essay-en.md)
+3. Mavin, A., et al. "[EARS: Easy Approach to Requirements Syntax](https://ieeexplore.ieee.org/document/5328509)" — IEEE, 2009
+4. Cucumber. "[Gherkin Reference](https://cucumber.io/docs/gherkin/reference/)"
+5. Starke, G. "[arc42 Architecture Template](https://arc42.org/)"
+6. ISO/IEC/IEEE. "[29148:2018 — Requirements Engineering](https://www.iso.org/standard/72089.html)"
+7. Bradner, S. "[RFC 2119 — Key words for use in RFCs to Indicate Requirement Levels](https://datatracker.ietf.org/doc/html/rfc2119)" — IETF, 1997
+8. Leiba, B. "[RFC 8174 — Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words](https://datatracker.ietf.org/doc/html/rfc8174)" — IETF, 2017
+9. Nygard, M. "[Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)" — ADR format reference
 
 ## Appendix
 

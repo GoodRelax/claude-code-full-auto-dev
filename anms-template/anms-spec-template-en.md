@@ -11,6 +11,13 @@ A chapter structure inspired by Robert C. Martin's Stable Dependencies Principle
   Chapter 4  Specification    ← Flexible: Most volatile / Most concrete
 ```
 
+This template is designed as Level 1 (ANMS) of the three-level specification hierarchy (ANMS / ANPS / ANGS). For scales that fit in a single context window, use it as a single file. For larger scales, use ANPS (AI-Native Plural Spec) by splitting into chapter-level files:
+
+- **spec-foundation** (Ch1-2: Foundation & Requirements) — Owner: srs-writer
+- **spec-architecture** (Ch3-6: Architecture, Specification, Test Strategy, Design Principles) — Owner: architect
+
+Under ANPS, each file carries a Common Block + Form Block (per the document management rules). The STFB structure is maintained even when files are split.
+
 ---
 
 ## Chapter Structure

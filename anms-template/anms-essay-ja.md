@@ -4,6 +4,8 @@
 
 LLM（大規模言語モデル）の急速な進化により、ソフトウェア開発は人間がコードを書く時代から、AIが仕様書を解釈してコードを生成する時代へと移行している。しかし、従来の重厚な仕様書はAIにとって冗長であり、一方で断片的な指示はシステム全体の整合性を欠く「コンテキスト喪失」を招く。本論文では、人間とAIが共通の設計基盤として参照し、開発をほぼ全自動化するための新しい仕様書テンプレート「AI-Native Minimal Spec (ANMS)」を提案する。ANMSは安定依存の原則に基づく「STFB（上剛下柔）」の章構成を採用し、EARS・Gherkin・Mermaidを組み合わせることで、論理的な厳密性と視覚的な設計同期を両立する。これにより、人間によるレビュー効率とAIの実装精度を最大化することを目的とする。
 
+本提案は、プロジェクト規模に応じた三段階の仕様体系の第1段階に位置づけられる。ANMS（単一ファイル、1コンテキストウィンドウに収まる規模）、ANPS（AI-Native Plural Spec: 複数ファイル分割、中規模）、ANGS（AI-Native Graph Spec: GraphDB活用、大規模）[2]の三段階であり、いずれもSTFBの設計原則を共有する。本論文ではANMSを定義し、ANPSおよびANGSへのスケーリングパスについても述べる。
+
 ## Keywords
 
 LLM-driven Development, AI-Native Specification, Requirements Engineering, EARS, Gherkin, Mermaid, STFB, Human-in-the-Loop
@@ -174,6 +176,30 @@ $$
 
 ここで、 $Valid(r)$ とは「AIが迷いなく実装可能であり、かつその正しさを自動判定できる状態」を指す。EARSは「一義性（ $Unambiguous$ ）」を、Gherkinは「検証可能性（ $Verifiable$ ）」をそれぞれ担保することで、この数理的条件を満たし、AIが生成したコードの正当性を自動的に検証可能にする。Ch6 の Design Principles Compliance は、この Valid な要求から生成された実装が工学的にも妥当であることを保証する補完的な層として機能する。
 
+## Scaling: Three-Level Spec Hierarchy（スケーリング: 三段階仕様体系）
+
+ANMSは「1コンテキストウィンドウに収まる」前提で設計した。この前提が破綻する規模のプロジェクトに対応するため、以下の三段階のスケーリングパスを定義する。
+
+| Level | 略称 | 正式名称 | 表現 | 規模 |
+|:-----:|------|----------|------|------|
+| 1 | ANMS | AI-Native Minimal Spec | 単一Markdownファイル | 1コンテキストウィンドウに収まる |
+| 2 | ANPS | AI-Native Plural Spec | 複数Markdownファイル + Common Block | 収まらないが、GraphDB不要 |
+| 3 | ANGS | AI-Native Graph Spec | GraphDB + Git（MDはビュー） | 大規模 |
+
+**三段階の設計原則:**
+
+- いずれの段階もSTFB（上剛下柔）の章構成を共有する
+- 上位段階は下位段階の拡張であり、対立ではない
+- プロジェクト開始時に規模を判断し、適切な段階を選択する
+
+**ANPS（Level 2）の概要:**
+
+ANPSは、ANMSのSTFB構造を保持したまま、チャプター単位でファイルを分割する。分割単位は仕様のオーナーシップ境界に従う: spec-foundation（Ch1-2: srs-writerが作成）と spec-architecture（Ch3-6: architectが詳細化）。各ファイルにはCommon Block（文書の識別・状態・ワークフロー情報）およびForm Block（タイプ固有の構造化フィールド）を付与し、エージェント間の協調を文書構造で保証する。
+
+**ANGS（Level 3）の概要:**
+
+ANGSは、仕様の本体をMarkdownからGraphDBに移し、Markdownをビューとして再定義する。Markdown・GraphDB・Gitの三要素を圏論の三角関係として概念化し、忘却関手によるコンテキスト最小化を実現する。詳細は別論文[2]を参照。
+
 ## Conclusion
 
 本論文では、AI全自動開発のための「ANMS」テンプレートを提案した。STFB（上剛下柔）の章構成により変更の波及範囲を構造的に制御し、EARS・Gherkin・Mermaidのハイブリッド記法により、各層に最適な形式で仕様を記述する。6章構成（Foundation / Requirements / Architecture / Specification / Test Strategy / Design Principles Compliance）により、定義・設計・検証・品質保証の全工程をカバーしつつ、AIのコンテキストウィンドウに収まる簡潔さを維持する。このフォーマットを「生きたドキュメント（Living Documentation）」として運用することで、仕様変更に強く、AIによる実装の正確性を最大化する開発が実現可能となる。
@@ -181,6 +207,7 @@ $$
 ## References
 
 1. Martin, R.C. "[The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)" — Stable Dependencies Principle (SDP), Stable Abstractions Principle (SAP)
+2. ANGS (AI-Native Graph Spec) — グラフ構造による仕様管理とエージェント協調（angs-essay-ja.md）
 2. Mavin, A., et al. "[EARS: Easy Approach to Requirements Syntax](https://ieeexplore.ieee.org/document/5328509)" — IEEE, 2009
 3. Cucumber. "[Gherkin Reference](https://cucumber.io/docs/gherkin/reference/)"
 4. Starke, G. "[arc42 Architecture Template](https://arc42.org/)"

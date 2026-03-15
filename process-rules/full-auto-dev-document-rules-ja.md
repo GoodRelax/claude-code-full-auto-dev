@@ -1,0 +1,965 @@
+``````markdown
+# full-auto-dev 文書管理規則 v0.0.0
+
+## Version 0.0.0 | Date: 2026-03-15
+
+> **ステータス:** Pre-release（PoC前）。PoC完了後に v1.0.0 へ昇格する。
+
+---
+
+# 1. 概要
+
+本文書は、full-auto-devフレームワークにおけるすべてのファイルの命名規則、構造、バージョニング、オーナーシップを定義する。
+
+すべてのエージェントは管理対象ファイルの作成・更新時にこのルールに従わなければならない（MUST）。
+
+プロセスが使う仕様書の形態（ANMS / ANPS / ANGS）にかかわらず、本文書の文書管理フォーマット（Common Block・Form Block等）はすべての管理対象文書に適用される。
+
+**関連文書:** [プロセス規則](full-auto-dev-process-rules-ja.md) — フェーズ定義・エージェント定義・品質管理等のプロセスルール
+
+## 1.1 本文書のバージョニング
+
+本文書自体のバージョンは **MAJOR.MINOR.PATCH** 形式で管理する。
+
+| レベル | 変更対象 | 影響範囲 | 既存ファイル再利用 |
+|--------|---------|---------|:------------------:|
+| **MAJOR** | Common Block / Footer の構造変更 | 全管理対象ファイル | 全ファイル要マイグレーション |
+| **MINOR** | Form Block の変更・追加 | 該当タイプのファイルのみ | 該当タイプのみ要確認 |
+| **PATCH** | Detail Block Guidance / 文言修正 | 影響なし | そのまま使える |
+
+管理対象ファイルの `doc:schema_version` は本文書の **MAJOR.MINOR** を記録する（PATCHは省略）。
+
+**リリースステータス:**
+
+| バージョン | 条件 | 意味 |
+|-----------|------|------|
+| 0.x.x | PoC前 | 設計段階。Common Block含め自由に変更可能 |
+| 1.0.0 | PoC完了・検証済み | 正式版。MAJOR変更にはマイグレーションガイドが必要 |
+
+---
+
+# 2. ディレクトリ構成
+
+**フレームワークリポジトリ:**
+
+```
+{framework-root}/
+  README.md                   # リポジトリ概要
+  process-rules/              # 運用規則（フレームワーク定義）
+    full-auto-dev-process-rules-ja.md
+    full-auto-dev-process-rules-en.md
+    full-auto-dev-document-rules-ja.md   # ← 本文書
+    full-auto-dev-document-rules-en.md
+  anms-template/              # ANMS仕様書テンプレート
+  .claude/commands/           # カスタムコマンド定義
+```
+
+**利用先プロジェクト:**
+
+```
+{project-root}/
+  CLAUDE.md                       # プロジェクト設定（process-rulesを参照）
+  user-order.md                   # ユーザー入力仕様（3問形式）
+  src/                            # ソースコード
+  tests/                          # テストコード
+  infra/                          # IaC (Infrastructure as Code)
+  project-management/             # オーケストレーション + PM成果物
+    pipeline-state.md
+    handoff/
+    progress/
+    old/
+  docs/                           # 設計成果物（最終成果物）
+    spec/                         # 仕様書
+    api/                          # OpenAPI定義
+    security/                     # 脅威モデル、セキュリティアーキテクチャ
+    old/
+  project-records/                # プロセス記録（監査証跡）
+    reviews/
+    decisions/
+    risks/
+    defects/
+    change-requests/
+    traceability/
+    security/                     # 脆弱性スキャン結果、SCAレポート
+    old/
+```
+
+**分離原則:**
+
+| ディレクトリ | 格納内容 | 主な利用者 |
+|-------------|----------|-----------|
+| `project-management/` | オーケストレーション状態、引継ぎ、進捗、WBS、コスト | leadエージェント、PMエージェント |
+| `docs/` | 仕様書、API文書、セキュリティ設計 — 「何を作ったか」 | 全エージェント、ユーザー、下流の利用者 |
+| `project-records/` | レビュー、意思決定、リスク、障害、CR — 「どう作ったか」 | 監査者、レビュアー、プロセス重視のステークホルダー |
+
+---
+
+# 3. ファイル命名規則
+
+## 3.1 全体方針
+
+- スタイル: **kebab-case** のみ（例外: 外部標準や言語規約に従う場合）
+- タイムスタンプ: **UTC**
+- 言語サフィックス: 多言語文書は `-ja.md` / `-en.md` を付与
+
+## 3.2 プロセス文書（project-management/）
+
+パイプライン管理、エージェント間引継ぎ、進捗管理に使用するファイル。
+
+**フォーマット:**
+
+```
+{file_type}-{NNN}-{YYYYMMDD}-{HHMMSS}.md
+```
+
+| ファイル | 命名例 | 備考 |
+|---------|--------|------|
+| パイプライン状態 | `pipeline-state.md` | シングルトン。連番・タイムスタンプなし |
+| 引継ぎ | `handoff-001-20260314-102530.md` | 標準フォーマット |
+| 進捗レポート | `progress-001-20260314-150000.md` | 標準フォーマット |
+| コストログ | `cost-log.json` | 時系列JSON。Common Block対象外 |
+| テスト推移 | `test-progress.json` | 時系列JSON。Common Block対象外 |
+| バグカーブ | `bug-curve.json` | 時系列JSON。Common Block対象外 |
+| WBS | `wbs.md` | シングルトン |
+| テスト計画 | `test-plan.md` | シングルトン |
+| ヒアリング記録 | `hearing-record.md` | シングルトン。Phase 1で作成 |
+
+## 3.3 プロセス記録（project-records/）
+
+レビュー、意思決定、リスク、障害、変更要求、トレーサビリティの記録。
+
+**フォーマット:**
+
+```
+{file_type}-{NNN}-{YYYYMMDD}-{HHMMSS}.md
+```
+
+| ファイル | 命名例 | 備考 |
+|---------|--------|------|
+| レビュー結果 | `review-003-20260314-153000.md` | 標準フォーマット |
+| 意思決定記録 | `decision-002-20260315-090000.md` | 標準フォーマット |
+| リスクエントリ | `risk-001-20260314-120000.md` | 個別リスク |
+| リスク台帳 | `risk-register.md` | シングルトン。統合台帳 |
+| 障害票 | `defect-012-20260316-140000.md` | 標準フォーマット |
+| 変更要求 | `cr-001-20260317-110000.md` | 標準フォーマット |
+| トレーサビリティ | `traceability-matrix.md` | シングルトン |
+| セキュリティスキャン | `sast-report-001-20260318-100000.md` | スキャン種別をprefixに |
+
+## 3.4 仕様書（docs/spec/）
+
+プロジェクトの要件・設計仕様。仕様フォーマット（ANMS/ANPS/ANGS）に依存する。
+
+**フォーマット:**
+
+```
+{project-name}-spec.md            # ANMS（単一ファイル）
+{project-name}-spec-ch{N}.md      # ANPS（チャプター分割時）
+```
+
+| ファイル | 命名例 | 備考 |
+|---------|--------|------|
+| ANMS仕様書 | `my-app-spec.md` | 単一ファイル |
+| ANPS Ch1-2 | `my-app-spec-ch1-2.md` | チャプター分割 |
+| ANPS Ch3 | `my-app-spec-ch3.md` | チャプター分割 |
+| ユーザー入力仕様 | `user-order.md` | プロジェクトルートに配置。3問形式 |
+
+## 3.5 一般文書（docs/）
+
+API定義、セキュリティ設計など、仕様書以外の設計成果物。
+
+**フォーマット:**
+
+```
+{内容を表す名前}.{拡張子}
+```
+
+| ファイル | 命名例 | 備考 |
+|---------|--------|------|
+| OpenAPI定義 | `openapi.yaml` | 外部標準（OpenAPI 3.0）に従う |
+| 脅威モデル | `threat-model.md` | Common Block付き |
+| セキュリティアーキテクチャ | `security-architecture.md` | Common Block付き |
+| インフラ構成図 | `infrastructure.md` | Common Block付き |
+
+## 3.6 ソースコード（src/）
+
+**フォーマット:** 採用言語・フレームワークの規約に従う。
+
+| 言語 | 規約 | 例 |
+|------|------|-----|
+| TypeScript | camelCase ファイル名、PascalCase コンポーネント | `userService.ts`, `UserCard.tsx` |
+| Python | snake_case | `user_service.py` |
+| Go | snake_case | `user_service.go` |
+| Rust | snake_case | `user_service.rs` |
+
+- Common Block **対象外**
+- トレーサビリティは `project-records/traceability/traceability-matrix.md` で管理
+
+## 3.7 テストコード（tests/）
+
+**フォーマット:** テストフレームワークの規約に従う。
+
+| 種別 | 規約 | 例 |
+|------|------|-----|
+| 単体テスト | 対象ファイル名 + `.test` / `.spec` | `userService.test.ts` |
+| 結合テスト | 対象 + `.integration.test` | `api.integration.test.ts` |
+| E2Eテスト | フロー名 + `.e2e.test` | `login-flow.e2e.test.ts` |
+| 性能テスト | 対象 + `.perf` | `api-latency.perf.js`（k6） |
+
+- Common Block **対象外**
+
+## 3.8 設定・インフラ（ルート / infra/）
+
+**フォーマット:** 各ツールの標準名を使用。リネームしない。
+
+| ファイル | 配置 | 備考 |
+|---------|------|------|
+| `package.json` | ルート | npm/yarn標準 |
+| `tsconfig.json` | ルート | TypeScript標準 |
+| `.eslintrc.json` | ルート | ESLint標準 |
+| `Dockerfile` | ルート or infra/ | Docker標準 |
+| `docker-compose.yml` | ルート or infra/ | Docker Compose標準 |
+| `*.tf` | infra/ | Terraform標準 |
+| `.github/workflows/*.yml` | .github/ | GitHub Actions標準 |
+
+- Common Block **対象外**
+
+## 3.9 old/ ディレクトリルール
+
+すべてのold/ディレクトリに共通:
+
+- 配置場所: `{同じディレクトリ}/old/`
+- ファイル名に日時を付与: `{元のファイル名}-{YYYYMMDD}-{HHMMSS}.md`
+- 元のファイルからタイムスタンプ部分を除いた名前を維持（認識しやすさのため）
+
+---
+
+# 4. ブロック構造
+
+管理対象の `.md` ファイルはすべて以下の4部構成に従う。
+
+**ブロック図:**
+
+```mermaid
+graph TD
+    A["Common Block<br/>全file_type共通<br/>doc: 名前空間"]
+    B["Form Block<br/>file_type固有<br/>専用名前空間"]
+    C["Detail Block<br/>詳細説明ゾーン<br/>名前空間不要"]
+    D["Footer<br/>更新履歴<br/>doc: 名前空間"]
+
+    A -->|"次"| B
+    B -->|"次"| C
+    C -->|"次"| D
+```
+
+各ブロックの役割は明確である。Common Blockはファイルを識別し、Form Blockはファイルタイプ固有の定型フォーマット（AIが従うべき構造）を定義し、Detail Blockは詳細な説明・根拠・証拠を記述し、Footerは変更履歴を追跡する。Form Blockは1ファイル内に複数配置できる（例: テストケースの連続）。
+
+## 4.1 情報の配置基準
+
+新しい情報をどのブロックに配置するかは、以下の基準で判断する。
+
+**配置基準テーブル:**
+
+| Block | 判断テスト | 性質 | 用途・利用者 |
+|-------|-----------|------|--------|
+| **Common Block** | 「全ファイルタイプで同じフィールドか？」→ Yes | ファイルの身元証明（identity） | フレームワーク自体（ファイル発見・ルーティング） |
+| **Form Block** | 「エージェントがこの値をパースして判断/アクションするか？」→ Yes | ファイルタイプ固有の構造化された状態・メトリクス | 他のエージェント（意思決定・ゲート・ダッシュボード） |
+| **Detail Block** | 「詳細な説明・根拠・証拠か？」→ Yes | ドメイン知識の本体 | 人間 + エージェント（理解のため。ルーティングではない） |
+| **Footer** | 「いつ誰が何を変えたか？」→ Yes | 変更履歴（append-only） | 監査（トレーサビリティ、デバッグ） |
+
+**判断フローチャート:**
+
+```mermaid
+flowchart TD
+    Start["新しい情報を<br/>どのBlockに置くか?"] -->|"判断開始"| Q1{"全file_typeで<br/>同じフィールド?"}
+    Q1 -->|"Yes"| Common["Common Block"]
+    Q1 -->|"No"| Q2{"エージェントが<br/>パースして<br/>判断/アクションする?"}
+    Q2 -->|"Yes"| Q3{"値は定量的<br/>またはenum?"}
+    Q3 -->|"Yes"| Type["Form Block"]
+    Q3 -->|"No_定性的"| Split["分離:<br/>enumをForm Block<br/>詳細をDetail Block"]
+    Q2 -->|"No"| Q4{"変更履歴?"}
+    Q4 -->|"Yes"| Footer["Footer"]
+    Q4 -->|"No"| Detail["Detail Block"]
+```
+
+このフローチャートは、情報のBlock配置を判断する手順を示す。最も迷いやすいのはQ2→Q3の分岐で、「エージェントが使うが定性的」な場合にenumとDetail Blockに分離するパターンである。
+
+**迷ったときの3原則:**
+
+1. **数値・enumはForm Block。** ダッシュボードやゲートで使う可能性があるなら、Detail Blockから導出させず正規化してForm Blockに持つ
+2. **定性的な説明はDetail Block。** ただし「定性的に見えるがenumで分類できる」場合は、enumをForm Blockに、詳細をDetail Blockに分離する
+3. **迷ったらForm Block寄りに判断する。** 自由形式のDetail Blockからの情報抽出は脆い。構造化できるものは構造化する
+
+## 4.2 配置判断の実例
+
+### 実例1: threat-model.md（脅威モデル）
+
+security-reviewer が脅威モデルを作成。他のエージェントはこれを参照して実装する。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| ファイルの目的 | Common? Form? | **Common** (`doc:purpose`) | 全ファイルタイプ共通フィールド |
+| 採用した脅威分析手法（STRIDE, DREAD等） | Form? Detail? | **Form Block** (`security:methodology`) | エージェントがパースして手法を判断。dashboardにも表示可能 |
+| 特定された脅威の総数 | Form? Detail? | **Form Block** (`security:threat_count`) | 数値メトリクス。progress-monitorが集計 |
+| 未軽減の高リスク脅威数 | Form? Detail? | **Form Block** (`security:unmitigated_high_count`) | review-agentがゲート判断に使う（0でないとfail） |
+| 脅威ごとの詳細（攻撃ベクター、影響、軽減策） | Form? Detail? | **Detail Block** | 詳細な分析内容。パースして判断はしない |
+
+**判断ポイント:** 「脅威の総数」はDetail Blockの表を数えればわかるが、Form Blockに正規化した数値を持つことで確実に機械読取可能になる。
+
+### 実例2: wbs.md（WBS）
+
+progress-monitor がWBSを管理。lead がフェーズ進行判断に参照する。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| 総タスク数 | Form? Detail? | **Form Block** (`wbs:task_total`) | 完了率算出の入力 |
+| 完了タスク数 | Form? Detail? | **Form Block** (`wbs:task_completed`) | dashboardに表示 |
+| 現在のクリティカルパス | Form? Detail? | **Form Block** (`wbs:critical_path`) | leadがボトルネック判断に使う |
+| 各タスクの詳細（担当、期間、依存関係） | Form? Detail? | **Detail Block** | タスク詳細はドメイン知識 |
+
+**判断ポイント:** クリティカルパスはDetail Block内のタスク表から導出できるが、導出値であってもエージェントが即座に判断に使うならForm Block。
+
+### 実例3: executive-dashboard.md（エグゼクティブダッシュボード）
+
+progress-monitor が更新するプロジェクト全体の要約。ユーザーが一目で状況を把握する。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| 現在のフェーズ | Form? Detail? | **Form Block** (`dashboard:phase`) | pipeline-stateと同期 |
+| プロジェクト全体の完了率 | Form? Detail? | **Form Block** (`dashboard:completion_pct`) | 数値メトリクス |
+| 全体のヘルスステータス（green/yellow/red） | Form? Detail? | **Form Block** (`dashboard:health`) | leadが報告要否を判断 |
+| オープン中のブロッカー数 | Form? Detail? | **Form Block** (`dashboard:blocker_count`) | 0でなければエスカレーション |
+| 各フェーズの詳細サマリー | Form? Detail? | **Detail Block** | 人間が読むための要約文 |
+
+**判断ポイント:** dashboardはForm Blockが大きくなるが、それは正しい。このファイルの存在意義が「構造化されたステータスの集約」だから。
+
+### 実例4: final-report.md（総括レポート）
+
+Phase 5でleadが作成。ユーザーがプロジェクト終了を判断するための材料。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| 最終テスト合格率 | Form? Detail? | **Form Block** (`report:test_pass_rate`) | 受入判断の入力 |
+| カバレッジ達成率 | Form? Detail? | **Form Block** (`report:coverage_pct`) | 同上 |
+| 未解決のCritical/Highバグ数 | Form? Detail? | **Form Block** (`report:open_critical`, `report:open_high`) | 0でなければリリース不可 |
+| 目標達成の評価 | Form? Detail? | **分離**: enum (`report:goal_achievement`: achieved/partial/not-achieved) → **Form Block**、詳細 → **Detail Block** | 定性的だがenumで分類可能 |
+| 残課題・技術的負債のリスト | Form? Detail? | **Detail Block** | 詳細なリスト |
+| 学んだ教訓（Lessons Learned） | Form? Detail? | **Detail Block** | 完全に自由記述 |
+
+**判断ポイント:** 「目標達成の評価」は定性的に見えるが、enumで分類してForm Blockに、詳細説明をDetail Blockに分離する。
+
+### 実例5: user-order.md / {project}-spec.md（仕様書）
+
+srs-writerがCh1-2を作成、architectがCh3-6を詳細化。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| 仕様形式（ANMS/ANPS） | Form? Detail? | **Form Block** (`spec:format`) | エージェントが読取方法を判断 |
+| ドラフト状態（draft/review/approved） | Form? Detail? | **Form Block** (`spec:draft_status`) | review-agentのゲート判断、change-managerのトリガー |
+| 完成済みチャプター | Form? Detail? | **Form Block** (`spec:completed_chapters`) | architectが作業開始位置を判断 |
+| 機能要件数 / 非機能要件数 | Form? Detail? | **Form Block** (`spec:fr_count`, `spec:nfr_count`) | traceabilityカバレッジ算出の母数 |
+| Ch1-6の本文全体 | Form? Detail? | **Detail Block** | ANMS/ANPSフォーマットに従う仕様本体 |
+
+**判断ポイント:** Common Block + Form Blockは「仕様書というファイルのメタデータ」。ANMSの章構成は「仕様の中身」。メタデータと中身は別レイヤーであり、二重管理にはならない。
+
+### 実例6: performance-report-NNN-*.md（性能テストレポート）
+
+test-engineerがk6実行後に作成。NFR目標との比較結果。
+
+| 情報 | 候補 | 判断 | 理由 |
+|------|------|------|------|
+| テスト対象エンドポイント数 | Form? Detail? | **Form Block** (`perf:endpoint_count`) | dashboardに集計 |
+| NFR達成率（pass/total） | Form? Detail? | **Form Block** (`perf:nfr_pass_rate`) | 100%でないとPhase 4不合格 |
+| P99レイテンシの最大値 | Form? Detail? | **Form Block** (`perf:p99_max_ms`) | SLA超過のアラート判断 |
+| 各エンドポイントの詳細結果 | Form? Detail? | **Detail Block** | レイテンシ・スループット・エラー率の表 |
+| k6スクリプトの設定パラメータ | Form? Detail? | **Detail Block** | テスト条件の記録（再現性のため） |
+
+---
+
+# 5. Common Block 仕様
+
+フィールド順序は固定。エージェントはフィールドの順序変更や必須フィールドの省略をしてはならない（MUST NOT）。
+
+**フィールド順序（AIの読取フローに最適化）:**
+
+```
+── 識別（何をどう読むか）──
+schema_version → file_type → form_block_cardinality
+── 状態（触っていいか）──
+→ document_state
+── ワークフロー（自分の仕事か）──
+→ owner → commissioned_by → consumed_by
+── コンテキスト（何の話か）──
+→ project → purpose → summary
+── 参照（関連は何か）──
+→ related_docs
+── 出自（いつ誰が）──
+→ created_by → created_at
+```
+
+**フィールド定義:**
+
+| フィールド | 型 | 必須 | グループ | 説明 |
+|-----------|------|------|---------|------|
+| schema_version | string | Yes | 識別 | スキーマバージョン（現在 "0.0"） |
+| file_type | enum | Yes | 識別 | 登録済みファイルタイプの1つ（第7章参照） |
+| form_block_cardinality | enum: single / multiple | Yes | 識別 | このファイルのForm Blockが単一か複数か |
+| document_state | enum: draft / review / approved / archived | Yes | 状態 | 文書のライフサイクル状態 |
+| owner | string | Yes | ワークフロー | 書込み権限を持つエージェント |
+| commissioned_by | string | Yes | ワークフロー | この文書の作成を指示したエージェント |
+| consumed_by | string | Yes | ワークフロー | この文書を次に利用するエージェント |
+| project | string | Yes | コンテキスト | プロジェクト名 |
+| purpose | string | Yes | コンテキスト | このファイルが存在する理由と期待されるアクション |
+| summary | string | Yes | コンテキスト | ファイル内容の簡潔な説明 |
+| related_docs | list | No | 参照 | 入力/出力/次のファイルへの参照 |
+| created_by | string | Yes | 出自 | ファイルを作成したエージェント |
+| created_at | datetime | Yes | 出自 | ISO 8601 作成タイムスタンプ（UTC） |
+
+**Common Block テンプレート:**
+
+```markdown
+<!-- ============================================================
+     COMMON BLOCK | DO NOT MODIFY STRUCTURE OR FIELD NAMES
+     ============================================================ -->
+
+## Identification
+
+<!-- FIELD: schema_version | type: string | required: true -->
+
+<doc:schema_version>0.0</doc:schema_version>
+
+<!-- FIELD: file_type | type: enum | required: true -->
+
+<doc:file_type>{file_type}</doc:file_type>
+
+<!-- FIELD: form_block_cardinality | type: enum | values: single,multiple | required: true -->
+
+<doc:form_block_cardinality>{single_or_multiple}</doc:form_block_cardinality>
+
+## Document State
+
+<!-- FIELD: document_state | type: enum | values: draft,review,approved,archived | required: true -->
+
+<doc:document_state>draft</doc:document_state>
+
+## Workflow
+
+<!-- FIELD: owner | type: string | required: true -->
+
+<doc:owner>{agent-name}</doc:owner>
+
+<!-- FIELD: commissioned_by | type: string | required: true -->
+<!-- Which agent ordered the creation of this document -->
+
+<doc:commissioned_by>{agent-name}</doc:commissioned_by>
+
+<!-- FIELD: consumed_by | type: string | required: true -->
+<!-- Which agent will use this document next -->
+
+<doc:consumed_by>{agent-name}</doc:consumed_by>
+
+## Context
+
+<!-- FIELD: project | type: string | required: true -->
+
+<doc:project>{project-name}</doc:project>
+
+<!-- FIELD: purpose | type: string | required: true -->
+<!-- Tell the agent WHY this file exists and what action is expected -->
+
+<doc:purpose>
+{purpose}
+</doc:purpose>
+
+<!-- FIELD: summary | type: string | required: true -->
+
+<doc:summary>
+{summary}
+</doc:summary>
+
+## References
+
+<!-- FIELD: related_docs | type: list | required: false -->
+
+<doc:related_docs>
+<doc:ref>{path-to-related-file}</doc:ref>
+</doc:related_docs>
+
+## Provenance
+
+<!-- FIELD: created_by | type: string | required: true -->
+
+<doc:created_by>{agent-name}</doc:created_by>
+
+<!-- FIELD: created_at | type: datetime | required: true -->
+
+<doc:created_at>{ISO-8601-timestamp}</doc:created_at>
+```
+
+**related_docs サブタグ:**
+
+| サブタグ | 意味 |
+|---------|------|
+| `<doc:ref>` | 一般参照（デフォルト） |
+| `<doc:input>` | この文書が消費するファイル |
+| `<doc:output>` | この文書が生成するファイル |
+| `<doc:next>` | シーケンス上の次のファイル（例: 次のhandoff） |
+
+---
+
+# 6. Footer 仕様
+
+Footerは全ファイルタイプ共通。エージェントは書込みのたびにchange_logに新しい `<entry>` を追記しなければならない（MUST）。
+
+**Footer テンプレート:**
+
+```markdown
+<!-- ============================================================
+     FOOTER | append change_log entry on every write
+     ============================================================ -->
+
+## Last Updated
+
+<!-- FIELD: updated_by | type: string | required: true -->
+
+<doc:updated_by>{agent-name}</doc:updated_by>
+
+<!-- FIELD: updated_at | type: datetime | required: true -->
+
+<doc:updated_at>{ISO-8601-timestamp}</doc:updated_at>
+
+## Change Log
+
+<!-- FIELD: change_log | type: list | append-only | DO NOT MODIFY OR DELETE EXISTING ENTRIES -->
+
+<doc:change_log>
+<entry at="{ISO-8601-timestamp}" by="{agent-name}" action="created" />
+</doc:change_log>
+```
+
+**change_log ルール:**
+
+- 追記専用（append-only）: 既存エントリの変更・削除は厳禁（NEVER）
+- 各書込み操作で新しい `<entry>` を追加しなければならない（MUST）
+- `action` フィールドに変更内容を記述する（例: "created", "updated phase to 2", "archived previous version to old/"）
+
+---
+
+# 7. ファイルタイプ（Common Block管理対象）
+
+**名前空間命名規則:** 名前空間はfile_type名をそのまま使用する。略称は禁止（例: ~~`cr:`~~ → `change-request:`）。原則2単語以下、最大3単語。`doc:` はCommon Block + Footer専用で予約済み。カテゴリにサブタイプがある場合はカテゴリを先頭に置く（例: `spec-foundation:`, `spec-architecture:`）。
+
+| file_type | 名前空間 | 目的 | ディレクトリ | シングルトン? |
+|-----------|---------|------|-------------|:----------:|
+| pipeline-state | `pipeline-state:` | パイプラインオーケストレーション状態 | `project-management/` | Yes |
+| handoff | `handoff:` | エージェント間タスク引継ぎ | `project-management/handoff/` | No |
+| progress | `progress:` | プロジェクト進捗とメトリクス | `project-management/progress/` | No |
+| hearing-record | `hearing-record:` | ヒアリング記録 | `project-management/` | Yes |
+| wbs | `wbs:` | WBS・ガントチャート | `project-management/progress/` | Yes |
+| test-plan | `test-plan:` | テスト計画 | `project-management/` | Yes |
+| review | `review:` | コード/設計レビュー結果 | `project-records/reviews/` | No |
+| decision | `decision:` | アーキテクチャ意思決定記録 | `project-records/decisions/` | No |
+| risk | `risk:` | リスクエントリおよび台帳 | `project-records/risks/` | No |
+| defect | `defect:` | 障害追跡 | `project-records/defects/` | No |
+| change-request | `change-request:` | 変更要求管理 | `project-records/change-requests/` | No |
+| traceability | `traceability:` | 要件-テスト間トレース | `project-records/traceability/` | Yes |
+| license-report | `license-report:` | ライセンス互換性レポート | `project-records/licenses/` | Yes |
+| performance-report | `performance-report:` | 性能テスト結果レポート | `project-records/performance/` | No |
+| spec-foundation | `spec-foundation:` | 仕様書 Ch1-2（Foundation・Requirements） | `docs/spec/` | Yes |
+| spec-architecture | `spec-architecture:` | 仕様書 Ch3-6（Architecture・Specification・Test Strategy・Design Principles） | `docs/spec/` | Yes |
+| threat-model | `threat-model:` | 脅威モデル | `docs/security/` | Yes |
+| security-architecture | `security-architecture:` | セキュリティ設計 | `docs/security/` | Yes |
+| observability-design | `observability-design:` | 可観測性設計 | `docs/observability/` | Yes |
+| executive-dashboard | `executive-dashboard:` | プロジェクト全体ダッシュボード | ルート | Yes |
+| final-report | `final-report:` | プロジェクト総括レポート | ルート | Yes |
+| user-order | `user-order:` | ユーザー入力仕様（3問形式） | ルート | Yes |
+
+---
+
+# 8. 名前空間プレフィックス
+
+名前空間プレフィックスは標準HTML/XMLタグとの衝突を防ぎ、フィールドを機械的にパース可能にする。命名規則は§7を参照。
+
+| 名前空間 | 使用箇所 | 例 |
+|---------|----------|-----|
+| `doc:` | Common Block + Footer（予約） | `<doc:schema_version>0.0</doc:schema_version>` |
+| `pipeline-state:` | pipeline-state Form Block | `<pipeline-state:phase>2</pipeline-state:phase>` |
+| `handoff:` | handoff Form Block | `<handoff:from>srs-writer</handoff:from>` |
+| `progress:` | progress Form Block | `<progress:completion_pct>45</progress:completion_pct>` |
+| `hearing-record:` | hearing-record Form Block | `<hearing-record:hearing_status>completed</hearing-record:hearing_status>` |
+| `wbs:` | wbs Form Block | `<wbs:task_total>24</wbs:task_total>` |
+| `test-plan:` | test-plan Form Block | `<test-plan:test_level>unit,integration,e2e</test-plan:test_level>` |
+| `review:` | review Form Block | `<review:result>pass</review:result>` |
+| `decision:` | decision Form Block | `<decision:id>DEC-001</decision:id>` |
+| `risk:` | risk Form Block | `<risk:score>6</risk:score>` |
+| `defect:` | defect Form Block | `<defect:severity>high</defect:severity>` |
+| `change-request:` | change-request Form Block | `<change-request:impact_level>medium</change-request:impact_level>` |
+| `traceability:` | traceability Form Block | `<traceability:coverage_pct>85</traceability:coverage_pct>` |
+| `license-report:` | license-report Form Block | `<license-report:compatible_count>12</license-report:compatible_count>` |
+| `performance-report:` | performance-report Form Block | `<performance-report:nfr_pass_rate>100%</performance-report:nfr_pass_rate>` |
+| `spec-foundation:` | spec-foundation Form Block | `<spec-foundation:fr_count>15</spec-foundation:fr_count>` |
+| `spec-architecture:` | spec-architecture Form Block | `<spec-architecture:completed_chapters>3,4</spec-architecture:completed_chapters>` |
+| `threat-model:` | threat-model Form Block | `<threat-model:threat_count>8</threat-model:threat_count>` |
+| `security-architecture:` | security-architecture Form Block | `<security-architecture:owasp_coverage>10/10</security-architecture:owasp_coverage>` |
+| `observability-design:` | observability-design Form Block | `<observability-design:log_format>structured-json</observability-design:log_format>` |
+| `executive-dashboard:` | executive-dashboard Form Block | `<executive-dashboard:health>green</executive-dashboard:health>` |
+| `final-report:` | final-report Form Block | `<final-report:goal_achievement>achieved</final-report:goal_achievement>` |
+| `user-order:` | user-order Form Block | `<user-order:format>ANMS</user-order:format>` |
+
+---
+
+# 9. Form Block 仕様
+
+各Form BlockはCommon BlockとDetail Blockの間に位置する。名前空間プレフィックスはfile_typeに対応する。
+
+## 9.0 Form Block 定義メタテンプレート
+
+新しいForm Blockを定義する際は、以下の2セクション構成に従わなければならない（MUST）。
+
+**メタテンプレート:**
+
+```
+## 9.N {file_type}（名前空間: {namespace}:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| {namespace}:{field_name} | {type} | {Yes/No} | {説明} | {enum値、範囲、トリガー条件} |
+
+### Detail Block Guidance
+
+{このファイルタイプのDetail Blockに記載すべきセクション構成と内容の指示}
+```
+
+**各セクションの責務:**
+
+| セクション | 責務 | 記述内容 |
+|-----------|------|---------|
+| **Fields** | AIが従うべき定型構造の定義 | フィールド名、型、必須/任意、説明、値域（enum値・数値範囲）、制約（エスカレーション条件・ゲート条件等） |
+| **Detail Block Guidance** | Detail Blockの構造制約 | 推奨セクション見出し、各セクションに記載すべき内容、採用すべき記述形式（ADR形式、テーブル形式等） |
+
+**メタテンプレートに含めないもの（Common Block または §7 で管理）:**
+
+| 情報 | 管理場所 | 理由 |
+|------|---------|------|
+| file_type, owner | Common Block | 全タイプ共通フィールド |
+| document_state | Common Block | 全タイプ共通フィールド |
+| commissioned_by, consumed_by | Common Block | 全タイプ共通フィールド |
+| form_block_cardinality | Common Block | 全タイプ共通フィールド |
+| 名前空間、シングルトン、ディレクトリ | §7 file_type テーブル | タイプの登録情報 |
+
+**Fields テーブルの「値域・制約」列の記述ルール:**
+
+- enum値: スラッシュ区切りで列挙する（例: `open / in-fix / closed`）
+- 数値範囲: 範囲を明示する（例: `0-100`）
+- トリガー条件: `→` で結果を記述する（例: `≧6 → ユーザーに通知`）
+- ゲート条件: `= 0 required for phase transition` のように記述する
+
+---
+
+## 9.1 pipeline-state（名前空間: pipeline-state:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| pipeline-state:phase | int | Yes | 現在のフェーズ | 0-5 |
+| pipeline-state:phase_label | string | Yes | 人間可読なフェーズ名 | — |
+| pipeline-state:step | string | Yes | 現在のステップID | — |
+| pipeline-state:step_label | string | Yes | ステップの説明 | — |
+| pipeline-state:phase_progress | string | Yes | 現在フェーズの「完了/全体」 | — |
+| pipeline-state:active_agents | list | Yes | 稼働中エージェントのタスクと開始時刻 | エントリ形式は下記参照 |
+| pipeline-state:blocked | boolean | Yes | 進行がブロックされているか？ | true / false |
+| pipeline-state:blocked_by | string | No | ブロッキング条件 | — |
+| pipeline-state:needs_human | boolean | Yes | ユーザー待ちか？ | true / false |
+| pipeline-state:human_action | string | No | ユーザーが行うべきアクション | — |
+| pipeline-state:current_gate | string | No | 活性中の品質ゲート | — |
+| pipeline-state:gate_result | enum | No | ゲート結果 | pending / pass / fail |
+| pipeline-state:gate_fail_target | string | No | ゲート失敗時の戻り先フェーズ | — |
+| pipeline-state:latest_handoff | string | No | 最新の引継ぎファイルパス | — |
+
+**active_agents エントリ形式:**
+
+```xml
+<agent name="{agent-name}" task="{task-description}" started_at="{ISO-8601}" />
+```
+
+### Detail Block Guidance
+
+フェーズ遷移ログ（追記専用テーブル）と自由記述ノートを記載する。
+
+## 9.2 handoff（名前空間: handoff:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| handoff:id | string | Yes | handoff-NNN | — |
+| handoff:from | string | Yes | 送信元エージェント | — |
+| handoff:to | string | Yes | 受信先エージェント | — |
+| handoff:phase_transition | string | Yes | "N->N" フェーズ遷移 | — |
+| handoff:status | enum | Yes | 引継ぎステータス | ready / in-progress / done / blocked / needs-human |
+
+### Detail Block Guidance
+
+引渡し成果物、人的介入の必要事項、品質ゲート結果を記載する。
+
+## 9.3 review（名前空間: review:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| review:id | string | Yes | review-NNN | — |
+| review:target | string | Yes | レビュー対象（ファイルパスまたは説明） | — |
+| review:dimensions | string | Yes | 適用したR1-R6次元（例: "R1" または "R2,R4,R5"） | — |
+| review:result | enum | Yes | レビュー結果 | pass / fail |
+| review:critical_count | int | Yes | Critical指摘の件数 | = 0 required for phase transition |
+| review:high_count | int | Yes | High指摘の件数 | = 0 required for phase transition |
+| review:medium_count | int | Yes | Medium指摘の件数 | — |
+| review:low_count | int | Yes | Low指摘の件数 | — |
+| review:gate_phase | string | No | このレビューがゲートするフェーズ遷移（例: "1->2"） | — |
+
+### Detail Block Guidance
+
+レビュー指摘の詳細（指摘箇所、重大度、修正提案）を記載する。品質ゲートルール: フェーズ遷移には Critical = 0 かつ High = 0 が必要。
+
+## 9.4 decision（名前空間: decision:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| decision:id | string | Yes | DEC-NNN | — |
+| decision:category | enum | Yes | 意思決定カテゴリ | architecture / security / technology / process / requirement |
+| decision:decision_status | enum | Yes | 意思決定ステータス | proposed / approved / rejected / superseded |
+| decision:approved_by | string | No | 承認者（ユーザーまたはlead）。未承認時は空 | — |
+
+### Detail Block Guidance
+
+Michael NygardのADR形式: Status / Context / Decision / Consequences を記載する。
+
+## 9.5 risk（名前空間: risk:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| risk:id | string | Yes | RISK-NNN | — |
+| risk:probability | enum | Yes | 発生確率 | low(1) / medium(2) / high(3) |
+| risk:impact | enum | Yes | 影響度 | low(1) / medium(2) / high(3) |
+| risk:score | int | Yes | probability x impact | 1-9、≧6 → ユーザーに通知 |
+| risk:mitigation | string | Yes | 軽減策 | — |
+| risk:risk_status | enum | Yes | リスクステータス | open / mitigated / closed / accepted |
+| risk:assigned_to | string | Yes | 軽減担当のエージェントまたはロール | — |
+
+### Detail Block Guidance
+
+リスクの詳細分析（原因、影響シナリオ、軽減策の詳細）を記載する。エスカレーションルール: スコア 6以上はユーザーへの通知が必要。
+
+## 9.6 progress（名前空間: progress:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| progress:phase | int | Yes | 現在のフェーズ（pipeline-stateと同期） | 0-5 |
+| progress:completion_pct | int | Yes | プロジェクト全体の完了率 | 0-100 |
+| progress:wbs_completed | string | Yes | "完了/全体" タスク数 | — |
+| progress:test_pass_rate | string | No | "合格/全体"（Phase 4以前は空） | — |
+| progress:coverage_pct | int | No | コードカバレッジ%（Phase 3以前は空） | 0-100 |
+| progress:bug_open_critical | int | Yes | オープン中のCriticalバグ数 | — |
+| progress:bug_open_high | int | Yes | オープン中のHighバグ数 | — |
+| progress:cost_spent_usd | number | Yes | 消費済みAPIコスト | — |
+| progress:cost_budget_usd | number | Yes | APIコスト予算 | ≧80% → ユーザーに通知 |
+
+### Detail Block Guidance
+
+進捗サマリーの説明文、直近のマイルストーン達成状況、次フェーズへの見通しを記載する。
+
+## 9.7 defect（名前空間: defect:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| defect:id | string | Yes | DEF-NNN | — |
+| defect:severity | enum | Yes | 障害の重大度 | critical / high / medium / low |
+| defect:defect_status | enum | Yes | 障害ステータス | open / in-analysis / in-fix / in-retest / closed |
+| defect:assigned_to | string | Yes | 修正担当エージェント | — |
+| defect:found_in_phase | int | Yes | 障害が発見されたフェーズ | 0-5 |
+| defect:related_requirement | string | No | 要件ID（例: FR-001）。追跡可能な場合 | — |
+
+### Detail Block Guidance
+
+障害の詳細（再現手順、根本原因分析、修正内容、再テスト結果）を記載する。defect_status の状態遷移は以下の図に従う。
+
+**障害ステータス状態遷移図:**
+
+```mermaid
+stateDiagram-v2
+    [*] --> open : 障害報告
+    open --> in_analysis : 担当エージェントが分析開始
+    in_analysis --> in_fix : 根本原因特定
+    in_fix --> in_retest : 修正適用
+    in_retest --> closed : 再テスト合格
+    in_retest --> in_fix : 再テスト不合格
+```
+
+## 9.8 change-request（名前空間: change-request:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| change-request:id | string | Yes | CR-NNN | — |
+| change-request:cause | enum | Yes | 変更原因 | bug / requirement-addition / spec-change / improvement |
+| change-request:impact_level | enum | Yes | 影響度 | high → ユーザー承認必須 / medium / low |
+| change-request:cr_status | enum | Yes | 変更要求ステータス | submitted / analyzing / approved / rejected / implemented |
+| change-request:approved_by | string | No | 承認者。未決定時は空 | — |
+
+### Detail Block Guidance
+
+変更の詳細（変更理由、影響範囲、対応計画）を記載する。エスカレーションルール: impact_level = high はユーザー承認が必要。
+
+## 9.9 traceability（名前空間: traceability:）
+
+### Fields
+
+| フィールド | 型 | 必須 | 説明 | 値域・制約 |
+|-----------|------|------|------|-----------|
+| traceability:scope | string | Yes | このマトリクスのカバー範囲 | — |
+| traceability:requirement_count | int | Yes | 追跡対象の総要件数 | — |
+| traceability:covered_count | int | Yes | 1つ以上のテストを持つ要件数 | — |
+| traceability:coverage_pct | int | Yes | トレーサビリティカバレッジ | 0-100 |
+
+### Detail Block Guidance
+
+Detail Blockにトレーサビリティマトリクスを記載する。マトリクスのカラム定義は以下の通り。
+
+| カラム | 説明 |
+|-------|------|
+| 要件ID | FR-NNN または NFR-NNN |
+| 要件 | 短い説明 |
+| 設計参照 | 仕様書のセクションまたはADR参照 |
+| 実装 | ファイルパスまたはモジュール |
+| テストID | カンマ区切りのテスト識別子 |
+| ステータス | covered / partial / uncovered |
+
+---
+
+# 10. バージョニングルール
+
+バージョニングは変更時点の文書**ステータス**によって決定される。
+
+**ステータス別ルール:**
+
+```
+draft     → ファイルを上書き（アーカイブなし）
+approved  → 現ファイルを old/ へ移動 → 新ファイルを作成
+released  → 現ファイルを old/ へ移動 → 新ファイルを作成
+```
+
+**シングルトンファイル**（pipeline-state.md, risk-register.md, traceability-matrix.md）:
+
+- 常に上書き更新
+- 履歴はchange_logエントリとgitで追跡
+
+---
+
+# 11. オーナーシップモデル
+
+各ファイルにはただ1つの `owner` エージェントが存在する。オーナーのみがCommon BlockとForm Blockのフィールドを変更できる。
+
+| オーナー | ファイル | 書込み範囲 |
+|---------|---------|-----------|
+| lead | pipeline-state.md | 完全制御。leadのみがこのファイルを書く |
+| srs-writer | 仕様書 Ch1-2 | 要件チャプターのCommon + Form + Detail |
+| architect | 仕様書 Ch3-6 | アーキテクチャチャプターのCommon + Form + Detail |
+| review-agent | reviewファイル | レビュー文書の完全制御 |
+| progress-monitor | progressファイル | 進捗・コストデータの完全制御 |
+| risk-manager | riskファイル | リスクエントリの完全制御 |
+| change-manager | change-requestファイル | CR文書の完全制御 |
+| test-engineer | defectファイル、traceability | 障害票とトレースの完全制御 |
+| security-reviewer | セキュリティ文書 | セキュリティ設計・スキャン結果の完全制御 |
+
+**Detail Block例外:** 任意のエージェントが、自分がオーナーでないファイルのDetail Blockに追記してよい（MAY）。ただしchange_logに追記を記録することが条件。
+
+**Handoffのオーナーシップ:** `from` エージェントが作成。`status` が `in-progress` になった後は `to` エージェントがステータスを更新できる。
+
+---
+
+# 12. 言語ポリシー
+
+| 要素 | 言語 |
+|------|------|
+| フィールド名と名前空間プレフィックス | 英語のみ |
+| HTMLコメント（FIELD注釈） | 英語のみ |
+| `purpose` と `summary` フィールド値 | 英語 |
+| Detail Block（詳細説明セクション） | 任意の言語可 |
+| エージェントプロンプト | 英語 |
+
+---
+
+# 13. Common Block 適用スコープ
+
+**判断原則:** 「エージェントが管理するMarkdown文書か？」 → Yes → Common Block必須。
+
+**One-line test:** "Is this a Markdown document that **our agents own and manage**?" → Yes → Common Block required.
+
+## 13.1 Common Block が必要な条件（すべて満たす場合）
+
+1. ファイル形式が `.md`（Markdown）である
+2. フレームワークのエージェントが作成・更新を管理する
+3. 外部ツールがファイル構造を規定していない
+
+## 13.2 Common Block が不要な条件（いずれかを満たす場合）
+
+1. **外部ツール規定形式** — ファイル構造がフレームワーク外のツールに規定されている（`.claude/agents/*.md`, `.claude/commands/*.md`, `openapi.yaml`, `Dockerfile`, `*.tf`, `.github/workflows/*.yml`）
+2. **JSON時系列データ** — プログラムがチャート描画等で消費する（`cost-log.json`, `test-progress.json`, `bug-curve.json`）
+3. **ソースコード・テストコード** — 言語・フレームワーク規約に従う（`src/`, `tests/`）
+4. **プロジェクト設定** — ユーザーが直接管理するテンプレート（`CLAUDE.md`）
+
+## 13.3 適用一覧
+
+| Common Block管理対象 | Common Block管理対象外 |
+|---------------------|----------------------|
+| 第7章の全9ファイルタイプ（Form Block付き） | 外部ツール規定形式（.claude/agents/, openapi.yaml等） |
+| 仕様書（user-order.md, {project}-spec.md） | JSON時系列データ（cost-log, test-progress, bug-curve） |
+| セキュリティ設計文書（threat-model, security-architecture） | ソースコード・テストコード |
+| 可観測性設計文書（observability-design） | 設定ファイル・IaC (Infrastructure as Code) |
+| WBS（wbs.md） | CLAUDE.md |
+| テスト計画（test-plan.md） | |
+| ヒアリング記録（hearing-record.md） | |
+| ライセンスレポート（license-report.md） | |
+| 性能テストレポート（performance-report-NNN-*.md） | |
+| 総括レポート（final-report.md） | |
+| エグゼクティブダッシュボード（executive-dashboard.md） | |
+
+---
+
+# 14. 設計根拠
+
+| 決定事項 | 根拠 |
+|---------|------|
+| 3ディレクトリ分離 | オーケストレーション（PM）、成果物（docs）、プロセス記録を分離。プロセスに関心がない人はproject-records/を無視できる |
+| カスタムXML風名前空間タグ | HTMLとの衝突防止、正規表現でパース可能、Markdownレンダラーで人間可読 |
+| 追記専用change_log | 監査証跡の完全性を保証。エージェントは履歴を書き換えられない |
+| シングルトンpipeline-state | 「今どこにいるか」の唯一の真実の源 |
+| オーナーベースの書込み制御 | 競合編集の防止。各ファイルの責任が明確 |
+| JSONをCommon Blockから除外 | 時系列データはチャート用にプログラムが消費する。MD構造を加えても利点なし |
+| UTCタイムスタンプ | マルチエージェント運用におけるタイムゾーンの曖昧性を排除 |
+| ステータスベースのバージョニング | ドラフトは生きた文書（上書きOK）、承認済みは履歴保存が必要 |
+| 仕様形態と独立 | 本ルールはプロセスの文書管理であり、仕様フォーマット（ANMS/ANPS/ANGS）の選択とは直交する。ただしCommon Blockは仕様書にも適用する（仕様フォーマットと共存可能） |
+| Common Block適用基準 | 旧基準（プロセス文書のみ）から「エージェントが管理するMD文書すべて」に拡張。外部ツール規定形式・JSON・コードのみを除外する |
+| process-rules/ をフレームワーク側に配置 | ルール文書はプロジェクト横断で不変。プロジェクト固有のPM成果物とは別管理 |
+| カテゴリ別命名規則 | プロセス文書・仕様書・一般文書・コード・設定はそれぞれ異なる規約に従う。統一すると不自然になる |
+
+---
+
+# 参考文献
+
+1. full-auto-dev プロセス規則 — `process-rules/full-auto-dev-process-rules-ja.md`
+2. Martin, R.C. "The Clean Architecture" — 安定依存の原則 (SDP)
+3. Nygard, M. "Documenting Architecture Decisions" — ADR形式の参考文献
+``````

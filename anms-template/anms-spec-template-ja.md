@@ -11,6 +11,13 @@ Robert C. Martin の安定依存の原則 (Stable Dependencies Principle) に着
   Chapter 4  Specification    ← 柔: 最も可変 / 最も具体的
 ```
 
+本テンプレートは三段階仕様体系（ANMS / ANPS / ANGS）の第1段階（ANMS）として設計されている。1コンテキストウィンドウに収まる規模では単一ファイルとして使用する。収まらない場合はANPS（AI-Native Plural Spec）としてチャプター単位でファイルを分割する:
+
+- **spec-foundation**（Ch1-2: Foundation・Requirements）— オーナー: srs-writer
+- **spec-architecture**（Ch3-6: Architecture・Specification・Test Strategy・Design Principles）— オーナー: architect
+
+ANPSでは各ファイルにCommon Block + Form Blockを付与する（文書管理規則に従う）。STFB構造はファイルが分かれても維持される。
+
 ---
 
 ## Chapter Structure

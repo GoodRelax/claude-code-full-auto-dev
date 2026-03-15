@@ -85,7 +85,7 @@ rm anms-essay-ja.md
 
 | Before | After |
 |--------|-------|
-| Phase 1: srs-writer が spec.md → IEEE 830 SRS を生成 | Phase 1: srs-writer が spec.md + anms-template/ → ANMS 形式の単一仕様書を spec/ に生成 |
+| Phase 1: srs-writer が user-order.md → IEEE 830 SRS を生成 | Phase 1: srs-writer が user-order.md + anms-template/ → ANMS 形式の単一仕様書を spec/ に生成 |
 | Phase 2: architect が SRS → IEEE 1016 SWS を生成 | Phase 2: architect が spec/ の ANMS Ch3-4 を詳細化（同一文書内） |
 | 2文書（docs/srs/SRS.md + docs/sws/SWS.md） | 1文書（spec/[project]-spec.md） |
 | docs/srs/, docs/sws/ | spec/ |
@@ -136,7 +136,7 @@ rm anms-essay-ja.md
 
 - ディレクトリ構成図を新配置に合わせる
 - クイックスタートに anms-template/ の説明を追加
-- `spec.md`（カジュアル入力）→ `spec/`（ANMS正式仕様）の流れを説明
+- `user-order.md`（カジュアル入力）→ `spec/`（ANMS正式仕様）の流れを説明
 
 ## タスク4: CLAUDE.md 更新
 
@@ -169,7 +169,7 @@ claude-code-full-auto-dev/
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
-├── spec.md                                ← カジュアル仕様（人間の入力）
+├── user-order.md                           ← カジュアル仕様（人間の入力）
 ├── claude-code-full-auto-dev-manual.md    ← ANMS対応版マニュアル
 │
 ├── anms-template/                         ← ANMSテンプレート（日英）

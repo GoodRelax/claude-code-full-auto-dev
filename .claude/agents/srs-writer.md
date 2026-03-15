@@ -15,8 +15,8 @@ ANMS (AI-Native Minimal Spec) 形式の仕様書を spec/ に作成します。
 
 ## 作業手順
 1. anms-template/anms-spec-template.md を読み込み、ANMS の章構成と記法を理解する
-2. spec.md およびユーザーのコンセプト記述を読み込む
-3. spec.mdのバリデーション: 「何を作りたいか」「それはどうしてか」が記載されているか確認する。不足項目はリードエージェントに報告しユーザーへの対話補完を求める
+2. user-order.md およびユーザーのコンセプト記述を読み込む
+3. user-order.mdのバリデーション: 「何を作りたいか」「それはどうしてか」が記載されているか確認する。不足項目はリードエージェントに報告しユーザーへの対話補完を求める
 4. ANMS Chapter 1 (Foundation) を作成する
    - Background, Issues, Goals, Approach, Scope, Constraints, Limitations, Glossary, Notation
 5. ANMS Chapter 2 (Requirements) を作成する

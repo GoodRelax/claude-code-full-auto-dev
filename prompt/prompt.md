@@ -1,3 +1,137 @@
+じゃ、順番に行こう。
+
+まずはこれから
+spec.md → user-order.md のリネーム（全ファイルに影響大）
+
+なんだけど、単純Grep置換は危険だよね？
+
+Detail Block 採用。
+
+Type Bock改名:
+あー。伝わってないなぁ。
+ステータスだけじゃないんだよ。
+例えばテストケースやテスト結果レポートも書式を定めたい
+
+また、1つのファイルに複数のテストケースが連なる場合は、 (今のところ type block)が複数ならんでもいい。
+
+目的はAIを縛ること。
+
+文書管理規則全体をレビューした。
+
+本ルールは仕様書のフォーマット（ANMS / ANPS / ANGS）とは独立している
+は誤解を招くな。
+プロセスが使う仕様書の形態（ANMS / ANPS / ANGS）にかかわらず、本仕様書のフォーマット...
+とするべき
+spec.md # ユーザー入力仕様（3問形式）
+
+spec.md って命名が良くないね。
+全然specificじゃない内容が入るから。
+user-order.md とかの方がいい。
+
+プロセスの最初にヒアリング工程が欲しい。
+Phase 0 と Phase1かな。
+そこで、仕様書を作っていく。
+
+infra/ # IaC
+IaC って何？ IaC( Infra....) ってフルセンテンスで書いて。
+
+ブロック図の矢印のラベルで 先行 ってなに？
+次
+ぐらいで良くない？
+
+各ブロックの役割は明確である。Common Blockはファイルを識別し、Type Blockはファイルタイプ固有の構造化メタデータを持ち、Bodyは本体を記述し、Footerは変更履歴を追跡する。
+
+Body って名前が悪いね。
+Freeform とかそんな感じがいいかな。
+
+Block 判断テスト 性質 消費者
+消費者⇒ 用途・利用者
+
+Block: Common block, type block...
+type ってあいまいやな。
+predefined block とか？
+purpose oriented blockとか
+
+ソフトは言霊。 命名が命。
+一旦、ここまでで意見くれたし。
+
+You're right.
+But before do the work, we should define the criteria which block should have each item.
+
+We need to control the agent precisely.
+If we can define the format we should define it.
+If there are big freedom area it'll be difficult to control them.
+Are these true?
+
+OK. Let's recall the definition and purpose of the type block.
+
+Could you show that?
+
+Woom...
+
+There are a lot of remaining items.
+In this kind of the case, we should clarify the concept. What do you think about it?
+
+Nice criteria! And CLAUDE.md should't have the common header.
+
+Update the rues about the common header as your proposed.
+
+not quite.
+spec.md can be multiple files in case of ANPS.
+spec.md should have the common header.
+final-report also has the common header.
+
+test-plan should have the common header.
+
+Why B1,B2, C4,E1 don't don't need the common header?
+
+Let's recap the criteria whether the common header is required.
+
+executive-dashboard.md is a singleton.
+The purpose is to check the overall progress rapidly.
+
+final-report.md will be made at the phase which is the human needs to check whether the project can end or not depending on the outcome compare to the goal of the project.
+
+executive-dashboard.md should have the common header.
+
+license-report is a singleton doc.
+
+Here are my answer.
+license-report.md is one of the metadata.
+test-plan.md should be handled as project management docs.
+I can't remember the pref-report-\*.md; explain it. I guess it should be in the project folder.
+
+final-report.md is metadata.
+
+Application of the MCBSMD depends on the document purpose. Let's decide one by one later.
+
+license is not a part of the security.
+independent folder is required in /project-records.
+
+The place of the test-plan is OK.
+
+The places of perf-report are OK.
+The place of each report depends on the phase.
+But, the filename should be changed from pref-report to performance-report...
+
+Place of the final-report should be root.
+And also, executive-dashboard.md is required in the root.
+
+How about it?
+
+下記フォルダの.mdを読め。
+C:\Users\good\_\OneDrive\Documents\GitHub\claude-code-full-auto-dev\process-rules
+
+C:\Users\good\_\OneDrive\Documents\GitHub\claude-code-full-auto-dev\anms-template
+
+その上で
+C:\Users\good\_\OneDrive\Documents\GitHub\claude-code-full-auto-dev\prompt\document-rules-handoff.md
+がどこまで進んだか確認せよ。
+
+さらにメモリ/メモの内容を提示せよ。
+
+これを受けて、今後のタスクを決める。
+
 ** 変遷（時間軸） コミット = スナップショット diff = 状態遷移
 ダメ 状態遷移**
 OK 履歴変遷
@@ -74,7 +208,7 @@ forward ってどういう意味？ depends ? Satisfy ?
 、全てこの4ペアの組み合わせで記述できる。
 その根拠を1文で
 
-5. 解決策 — オーガナイザーによるコンテキスト配分
+1. 解決策 — オーガナイザーによるコンテキスト配分
    課題も良く分からんのに何を解決するの？
    課題に紐づけて。 章名はシンプルに
 
