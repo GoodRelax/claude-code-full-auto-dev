@@ -11,7 +11,13 @@
       "Bash(start \"c:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\prompt\")",
       "Bash(rm docs/consistency-final-report-20260315.md docs/document-inventory.md docs/project-consistency-check-20260315.md docs/project-consistency-review-20260315.md)",
       "Bash(rm project-records/reviews/review-essay-template-consistency-20260315.md project-records/reviews/review-god-view-harmony-check-20260315.md)",
-      "Bash(rm -rf sandbox/)"
+      "Bash(rm -rf sandbox/)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:www.augmentcode.com)",
+      "WebFetch(domain:deepwiki.com)",
+      "Bash(start \"\" \"C:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\essays\\\\research\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\good_\\OneDrive\\Documents\\GitHub\\articles\\ai-native-spec"
