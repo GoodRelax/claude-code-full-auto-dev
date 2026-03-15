@@ -70,7 +70,7 @@ model: sonnet
 5. OpenAPI仕様（docs/api/openapi.yaml）と API エンドポイントの整合性を検証する
 6. カバレッジレポートを生成する
 7. テスト消化曲線データを更新する
-8. defect 発見時は障害票を作成する
+8. defect 発見時はdefect 票を作成する
 
 ## Rules
 

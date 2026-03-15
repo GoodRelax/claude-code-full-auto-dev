@@ -11,7 +11,7 @@
 - 軽微な技術的判断はClaude Codeが自律的に行う
 - 仕様書はdocs/spec/配下に出力する（形式はプロジェクト規模に応じてANMS/ANPSを選択）。その他の設計成果物はdocs/配下にMarkdownで出力する
 - プロセス文書（パイプライン状態、引継ぎ、進捗）はproject-management/配下に出力する
-- プロセス記録（レビュー、意思決定、リスク、障害、CR、トレーサビリティ）はproject-records/配下に出力する
+- プロセス記録（レビュー、意思決定、リスク、defect、CR、トレーサビリティ）はproject-records/配下に出力する
 - コードはsrc/配下、テストはtests/配下、IaCはinfra/配下に配置する
 - 運用規則は以下を参照する:
   - process-rules/full-auto-dev-process-rules-ja.md（プロセス規則: フェーズ定義・品質管理）
@@ -19,6 +19,7 @@
   - process-rules/agent-list-ja.md（エージェント一覧: 名簿・オーナーシップ・データフロー）
   - process-rules/prompt-structure-ja.md（プロンプト構造規約: S0-S6）
   - process-rules/glossary-ja.md（用語集: 選定理由・略称判定・紛らわしい対の区別）
+  - process-rules/defect-taxonomy-ja.md（不具合系用語の体系: error/fault/failure/defect/incident/hazard の定義と使い分け）
   - process-rules/review-standards-ja.md（レビュー観点規約: R1-R6）
 
 ## 言語設定
@@ -58,7 +59,7 @@
 - メインブランチ: main（直接コミット禁止）
 - 開発ブランチ: develop（統合ブランチ）
 - 機能ブランチ: feature/{issue番号}-{説明}（develop から分岐）
-- 障害修正ブランチ: fix/{issue番号}-{説明}
+- defect 修正ブランチ: fix/{issue番号}-{説明}
 - リリースブランチ: release/v{バージョン}（develop から分岐）
 - PRマージ: develop → main は review-agent PASS 後にのみ許可
 - Agent Teams の並列実装: git worktree を使用し、各エージェントは専用ブランチで作業
@@ -116,7 +117,7 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - **Implementer Agent（implementer）**: src/ 配下にコードを実装する。設計文書に従い、Clean Architecture・DIPを遵守する。単体テストも作成する
 - **Test Agent（test-engineer）**: tests/ 配下にテストを作成・実行する。カバレッジレポートを生成する
 - **Review Agent（review-agent）**: project-records/reviews/ にレビュー報告を出力する。R1〜R6の観点（SW工学原則・並行性・パフォーマンス）でレビューし、Critical/High指摘がゼロになるまで次フェーズへの移行をブロックする
-- **PM Agent（progress-monitor）**: project-management/progress/ に進捗レポートを出力する。WBS/障害カーブ/コストを管理する
+- **PM Agent（progress-monitor）**: project-management/progress/ に進捗レポートを出力する。WBS/defect curve/コストを管理する
 - **Change Manager Agent（change-manager）**: 仕様書承認後のユーザー起点の変更要求をproject-records/change-requests/に記録し、影響分析を行う。impact_level=highはユーザー承認必須。AI側の技術的変更はdefect/decisionで管理する
 - **Risk Manager Agent（risk-manager）**: project-records/risks/にリスクエントリを記録し、risk-register.mdを管理する。score≧6はユーザーに通知
 - **License Checker Agent（license-checker）**: 依存ライブラリ追加時にライセンス互換性を確認し、帰属表示を管理する
@@ -142,14 +143,14 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - コードのリファクタリング方針
 - テストケースの設計
 - ドキュメントの構成
-- 障害修正の方法
+- defect 修正の方法
 
 ## 必須プロセス設定（process-rules/full-auto-dev-process-rules-ja.md 第3章参照）
 
 - 変更管理: 仕様書承認後の変更はchange-managerエージェント経由で処理する
 - リスク管理: planning フェーズ完了時にリスク台帳を作成し、各フェーズ開始時に更新する
 - トレーサビリティ: 要求ID→設計ID→テストIDの対応をproject-records/traceability/に記録する
-- 問題管理: 障害はproject-records/defects/に障害票として記録し、根本原因分析を行う
+- 問題管理: defect は project-records/defects/ に defect 票として記録し、根本原因分析を行う
 - ライセンス管理: 依存ライブラリ追加時にlicense-checkerエージェントを実行する
 - 監査記録: 重要判断はproject-records/decisions/に記録する
 - コスト管理: APIトークン消費をproject-management/progress/cost-log.jsonに記録する

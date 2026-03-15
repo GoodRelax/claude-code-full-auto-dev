@@ -1,7 +1,7 @@
 # 用語集
 
 > **本文書の位置づけ:** full-auto-dev フレームワークで使用する用語の定義。辞書的な一般用語は含まない。フレームワーク固有の意味・選定理由・非採用の代替を記録する。
-> **関連文書:** [プロセス規則](full-auto-dev-process-rules-ja.md)、[文書管理規則](full-auto-dev-document-rules-ja.md)、[エージェント一覧](agent-list-ja.md)
+> **関連文書:** [プロセス規則](full-auto-dev-process-rules-ja.md)、[文書管理規則](full-auto-dev-document-rules-ja.md)、[エージェント一覧](agent-list-ja.md)、[不具合系用語の体系](defect-taxonomy-ja.md)
 
 ---
 
@@ -14,7 +14,13 @@
 | 要求 | requirement | システムが満たすべき条件。EARS 構文で形式化する | 要件 | 要求が根源（求めるもの）。要件は派生（満たすべき条件）。Requirements = 要求で統一 |
 | インタビュー | interview | ユーザーへの構造化質問による要求抽出 | ヒアリング | hearing は和製英語。英語では法廷審問・聴覚の意味 |
 | status | ステータス | ワークフロー上の現在位置を示す値 | state | state（存在モード）と status（進捗位置）の区別は実務上不要。status に統一 |
-| defect | 障害 | テスト・運用で発見された不具合の正式記録 | bug, バグ | defect = 正式記録（file_type）。bug はメトリクスの俗称としても使わない。defect に統一 |
+| error | error | 人間の認識・判断・操作のミス。fault の原因（IEEE 1044）。詳細は [defect-taxonomy](defect-taxonomy-ja.md) 参照 | 誤り | 英単語で統一。日本語の「誤り」は日常語で技術的精度が低い |
+| fault | fault | error の結果、コード・設計・仕様に潜在する不正状態。発見されるまで発現しない（IEEE 1044, IEC 61508） | フォールト, 欠陥 | 英単語で統一。カタカナも不採用 |
+| failure | failure | fault が実行時に発現し、要求を満たさなくなった事象（IEEE 1044, IEC 61508） | フェイラー, 故障, 障害 | 「故障」はHW寄り、「障害」は多義的。英単語で統一 |
+| defect | defect | テスト・運用で発見された failure（または fault）の正式記録（file_type）。因果連鎖: error → fault → failure → defect | 障害, bug, バグ, 不具合 | 「障害」は failure/incident と混同するため廃止。英単語で統一 |
+| incident | incident | 本番環境で発生した計画外のサービス影響事象（ITIL, ISO 20000）。file_type: incident-report | 障害, インシデント | 英単語で統一。カタカナも不採用 |
+| hazard | hazard | failure が人命・財産・環境に害を及ぼしうる危険源（IEC 61508）。条件付きプロセス「機能安全」が有効な場合に使用 | ハザード | 英単語で統一 |
+| fault origin | fault origin | fault が混入したフェーズ。requirements fault / design fault / implementation fault の3分類（IEEE 1044）。defect の root cause analysis で使用 | — | 因果連鎖における fault の発生源を特定するための分類軸 |
 | interview-record | インタビュー記録 | ユーザーインタビューの構造化記録（file_type） | hearing-record | 上記 interview の選定に連動 |
 | disaster-recovery-plan | 災害復旧計画 | RPO/RTO に基づく復旧手順の定義（file_type） | dr-plan | 名前空間の略称禁止ルールに従う |
 
@@ -61,3 +67,7 @@
 | エージェント vs サブエージェント | エージェント = agent-list に登録された12のロール定義。サブエージェント = Claude Code が起動する子プロセス（エージェントを含む） |
 | lead vs organizer | lead = プロセス規則で定義されたオーケストレーターエージェント。organizer = ANGS 論文で提案されたグラフ走査エージェント。現時点では同一の役割を異なる文脈で呼んだもの |
 | document_status vs {type}_status | 同じ status。document_status = Common Block（文書ライフサイクル: draft/review/approved/archived）。{type}_status = Form Block（ドメイン固有のワークフロー位置） |
+| fault vs defect | fault = コードに潜在する不正状態（未発見）。defect = 発見後に記録された正式な問題票（file_type）。fault が発見されて defect として起票される |
+| failure vs incident | failure = 要求を満たさなくなった技術的事象（テスト中含む）。incident = failure が本番でサービスに影響した運用的事象。テスト中の failure は incident ではない |
+| defect vs incident | defect = テスト・開発中の発見記録（file_type: defect, owner: test-engineer）。incident = 本番での発生記録（file_type: incident-report, owner: lead）。フェーズが異なる |
+| hazard vs risk | hazard = 人命・財産への危険源（IEC 61508）。risk = プロジェクト目標への影響（file_type: risk）。hazard は機能安全固有、risk は全プロジェクト共通 |
