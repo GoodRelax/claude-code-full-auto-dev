@@ -14,8 +14,12 @@
 - プロセス記録（レビュー、意思決定、リスク、障害、CR、トレーサビリティ）はproject-records/配下に出力する
 - コードはsrc/配下、テストはtests/配下、IaCはinfra/配下に配置する
 - 運用規則は以下を参照する:
-  - process-rules/full-auto-dev-process-rules-ja.md（プロセス規則: フェーズ定義・エージェント・品質管理）
+  - process-rules/full-auto-dev-process-rules-ja.md（プロセス規則: フェーズ定義・品質管理）
   - process-rules/full-auto-dev-document-rules-ja.md **v0.0.0**（文書管理規則: 命名・ブロック構造・バージョニング。PoC前のPre-release）
+  - process-rules/agent-list-ja.md（エージェント一覧: 名簿・オーナーシップ・データフロー）
+  - process-rules/prompt-structure-ja.md（プロンプト構造規約: S0-S6）
+  - process-rules/glossary-ja.md（用語集: 選定理由・略称判定・紛らわしい対の区別）
+  - process-rules/review-standards-ja.md（レビュー観点規約: R1-R6）
 
 ## 言語設定
 

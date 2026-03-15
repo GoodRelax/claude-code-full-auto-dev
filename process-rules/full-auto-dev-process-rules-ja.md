@@ -49,10 +49,7 @@
 - [第6章 CLAUDE.md の設計](#第6章-claudemd-の設計プロジェクトの頭脳)
   - 6.1 CLAUDE.md テンプレート
   - 6.2 CLAUDE.md 設計のポイント
-- [第7章 エージェント定義](#第7章-エージェント定義)
-  - 7.1 エージェント定義の基本構造
-  - 7.2 コアエージェント（srs-writer / architect / security-reviewer / test-engineer / review-agent / progress-monitor）
-  - 7.3 プロセス管理エージェント（change-manager / risk-manager / license-checker）
+- [第7章 エージェント定義](#第7章-エージェント定義)（→ [エージェント一覧](agent-list-ja.md)、[プロンプト構造規約](prompt-structure-ja.md)、[用語集](glossary-ja.md)）
 - [第8章 カスタムコマンド定義](#第8章-カスタムコマンド定義)
   - 8.1 全自動開発開始コマンド（full-auto-dev）
   - 8.2 進捗確認コマンド（check-progress）

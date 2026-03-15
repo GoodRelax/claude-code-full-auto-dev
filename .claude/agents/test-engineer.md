@@ -54,13 +54,12 @@ model: sonnet
 | defect | project-records/defects/ | implementer |
 | traceability | project-records/traceability/ | review-agent |
 | performance-report | project-records/performance/ | review-agent, lead |
+| test-progress.json | project-management/progress/ | progress-monitor |
+| bug-curve.json | project-management/progress/ | progress-monitor |
 
 ### Work
 
-| ファイル | 用途 |
-|---------|------|
-| test-progress.json | テスト消化曲線データ（progress-monitor が参照） |
-| bug-curve.json | defect 発見/修正の累積データ（progress-monitor が参照） |
+なし
 
 ## Procedure
 
