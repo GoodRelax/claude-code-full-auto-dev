@@ -63,6 +63,10 @@ model: sonnet
 
 ## Rules
 
+### 出力規則
+
+出力する file_type（change-request）は文書管理規則 §9 の Form Block 仕様に従って作成する。
+
 ### 変更要求票の必須記載項目
 
 - CR番号・日付・変更原因（requirement-addition / requirement-change / scope-change）

@@ -41,7 +41,7 @@ model: sonnet
 | defect | test-engineer | defect 数の追跡 |
 | performance-report | test-engineer | 性能テスト結果の追跡 |
 | test-progress.json | test-engineer | テスト消化曲線データ |
-| bug-curve.json | test-engineer | defect 発見/修正データ |
+| defect-curve.json | test-engineer | defect 発見/修正データ |
 | cost-log.json | framework | APIコスト追跡 |
 
 ### Out
@@ -67,6 +67,10 @@ model: sonnet
 8. エージェント応答を監視する（タイムアウト・循環待機の検知）
 
 ## Rules
+
+### 出力規則
+
+出力する file_type（progress, wbs）は文書管理規則 §9 の Form Block 仕様に従って作成する。
 
 ### 異常検知閾値
 

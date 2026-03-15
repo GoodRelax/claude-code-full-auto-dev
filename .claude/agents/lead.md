@@ -81,6 +81,10 @@ model: opus
 
 ## Rules
 
+### 出力規則
+
+出力する file_type（pipeline-state, executive-dashboard, final-report, decision, handoff, user-manual, runbook, incident-report, stakeholder-register）は文書管理規則 §9 の Form Block 仕様に従って作成する。
+
 ### フェーズ遷移条件
 
 | 遷移 | 条件 |

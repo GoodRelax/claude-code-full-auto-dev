@@ -116,7 +116,7 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - **Implementer Agent（implementer）**: src/ 配下にコードを実装する。設計文書に従い、Clean Architecture・DIPを遵守する。単体テストも作成する
 - **Test Agent（test-engineer）**: tests/ 配下にテストを作成・実行する。カバレッジレポートを生成する
 - **Review Agent（review-agent）**: project-records/reviews/ にレビュー報告を出力する。R1〜R6の観点（SW工学原則・並行性・パフォーマンス）でレビューし、Critical/High指摘がゼロになるまで次フェーズへの移行をブロックする
-- **PM Agent（progress-monitor）**: project-management/progress/ に進捗レポートを出力する。WBS/バグカーブ/コストを管理する
+- **PM Agent（progress-monitor）**: project-management/progress/ に進捗レポートを出力する。WBS/障害カーブ/コストを管理する
 - **Change Manager Agent（change-manager）**: 仕様書承認後のユーザー起点の変更要求をproject-records/change-requests/に記録し、影響分析を行う。impact_level=highはユーザー承認必須。AI側の技術的変更はdefect/decisionで管理する
 - **Risk Manager Agent（risk-manager）**: project-records/risks/にリスクエントリを記録し、risk-register.mdを管理する。score≧6はユーザーに通知
 - **License Checker Agent（license-checker）**: 依存ライブラリ追加時にライセンス互換性を確認し、帰属表示を管理する

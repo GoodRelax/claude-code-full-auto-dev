@@ -58,6 +58,6 @@
 |---|------|
 | 要求 vs 変更要求 | 要求 = requirement（システムが満たすべき条件）。変更要求 = change request（仕様承認後のユーザー起点の変更リクエスト）。同じ「要求」だが英語では requirement vs request で別語 |
 | 仕様書 vs テンプレート | 仕様書 = プロジェクト固有の成果物（docs/spec/）。テンプレート = フレームワークが提供する雛形（process-rules/spec-template-ja.md） |
-| エージェント vs サブエージェント | エージェント = agent-list に登録された11のロール定義。サブエージェント = Claude Code が起動する子プロセス（エージェントを含む） |
+| エージェント vs サブエージェント | エージェント = agent-list に登録された12のロール定義。サブエージェント = Claude Code が起動する子プロセス（エージェントを含む） |
 | lead vs organizer | lead = プロセス規則で定義されたオーケストレーターエージェント。organizer = ANGS 論文で提案されたグラフ走査エージェント。現時点では同一の役割を異なる文脈で呼んだもの |
 | document_status vs {type}_status | 同じ status。document_status = Common Block（文書ライフサイクル: draft/review/approved/archived）。{type}_status = Form Block（ドメイン固有のワークフロー位置） |

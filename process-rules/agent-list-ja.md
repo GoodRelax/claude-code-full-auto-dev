@@ -119,6 +119,17 @@
 |-----------|------------|:-----:|------------|
 | license-report | project-records/licenses/ | 単 | implementation, delivery |
 
+### kotodama-kun
+
+> kotodama-kun は file_type を所有しない。チェック報告は軽微な場合 lead への口頭報告、重大な場合 review として project-records/reviews/ に記録する（review-agent の file_type を借用）。
+
+| 入力 | 提供元 | 用途 |
+|------|--------|------|
+| （チェック対象の成果物） | 各エージェント | 用語・命名チェック対象 |
+| glossary-ja.md | framework | フレームワーク用語集との照合 |
+| spec-foundation (Ch1.8 Glossary) | srs-writer | プロジェクト用語集との照合 |
+| full-auto-dev-document-rules-ja.md §7 | framework | file_type 名・名前空間の正式定義 |
+
 ---
 
 ## 3. エージェント間データフロー
@@ -156,7 +167,7 @@ flowchart TD
     Impl -->|"src/ tests/"| Test
     Impl -->|"src/"| Rev
     Test -->|"defect"| Impl
-    Test -->|"performance-report<br/>traceability"| Rev
+    Test -->|"test-plan<br/>performance-report<br/>traceability"| Rev
     Rev -->|"review"| Lead
     PM -->|"progress<br/>wbs"| Lead
     RM -->|"risk"| Lead

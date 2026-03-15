@@ -55,7 +55,7 @@ model: sonnet
 | traceability | project-records/traceability/ | review-agent |
 | performance-report | project-records/performance/ | review-agent, lead |
 | test-progress.json | project-management/progress/ | progress-monitor |
-| bug-curve.json | project-management/progress/ | progress-monitor |
+| defect-curve.json | project-management/progress/ | progress-monitor |
 
 ### Work
 
@@ -73,6 +73,10 @@ model: sonnet
 8. defect 発見時は障害票を作成する
 
 ## Rules
+
+### 出力規則
+
+出力する file_type（test-plan, defect, traceability, performance-report）は文書管理規則 §9 の Form Block 仕様に従って作成する。
 
 ### テスト命名規約
 
