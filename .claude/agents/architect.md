@@ -1,6 +1,6 @@
 ---
 name: architect
-description: ANMS仕様書のCh3-6を詳細化し、OpenAPI仕様・データモデル・マイグレーション戦略を設計する
+description: 仕様書のCh3-6を詳細化し、OpenAPI仕様・データモデル・マイグレーション戦略を設計する
 tools:
   - Read
   - Write
@@ -50,5 +50,5 @@ docs/spec/ の ANMS 仕様書 Ch3-6 を詳細化し、OpenAPI 3.0仕様を docs/
 - 本番データへの非可逆操作（DROP COLUMN等）はユーザーに確認を求める
 
 ## 出力規則
-- ANMS仕様書は同一ファイル（docs/spec/[project-name]-spec.md）内を更新する
+- 仕様書は選定した仕様形式に従い更新する（ANMSの場合は同一ファイル内を更新）
 - すべての設計要素にIDを付与し、Ch2 の要件IDにトレース可能にする

@@ -31,7 +31,7 @@ model: sonnet
 
 ## 性能テスト規約
 - 性能テストシナリオは tests/performance/ に配置する
-- 目標値はANMS仕様書 Ch2 の非機能要件（NFR）から取得する
+- 目標値は仕様書 Ch2 の非機能要件（NFR）から取得する
 - 結果レポートは project-records/performance/performance-report-{日付}.md に出力する
 
 ## 出力

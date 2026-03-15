@@ -67,6 +67,7 @@
 - エラーハンドリングは明示的に行う
 - 構造化ログ（JSON形式）を使用する（console.logは禁止）
 - **命名は言霊:** `type`, `data`, `info`, `value` 等の意味を持たない汎用語は禁止。名前は「それが何か」を一目で伝えること。何の種別かをドメインで限定する（例: `status` → `decision_status`）
+- **AI/LLMプロンプト配置原則:** 製品のプロンプトは `src/` 配下（コードと同等）。プロジェクトを回すプロンプトは `.claude/` 配下（メタレイヤー）。混在させない
 
 ## セキュリティ要件
 
@@ -104,8 +105,8 @@
 
 Agent Teamsで作業する場合、以下のロール定義を使用する:
 
-- **Lead Agent（orchestrator）**: プロジェクト全体のオーケストレーション。pipeline-state.md / executive-dashboard.md / final-report.md / decision記録を管理する。フェーズ遷移と品質ゲートを制御する。agents/にファイルを持たない他のエージェントとは異なり、Claude Code本体がこの役割を担う
-- **SRS Agent（srs-writer）**: user-order.md（3問形式）+ process-rules/spec-template-ja.md を基に、ANMS形式の仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
+- **Lead Agent（orchestrator）**: プロジェクト全体のオーケストレーション。pipeline-state.md / executive-dashboard.md / final-report.md / decision記録を管理する。フェーズ遷移と品質ゲートを制御する。`.claude/agents/lead.md` で定義
+- **SRS Agent（srs-writer）**: user-order.md（3問形式）+ process-rules/spec-template-ja.md を基に、仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements、形式はsetupフェーズで選定）。ユーザーコンセプトを構造化する
 - **Architect Agent（architect）**: docs/spec/ の ANMS 仕様書 Ch3-6 を詳細化（Architecture・Specification・Test Strategy・Design Principles）。docs/api/ にOpenAPI仕様を生成する
 - **Security Agent（security-reviewer）**: docs/security/ にセキュリティ設計を作成。実装コードの脆弱性レビューを行う。スキャン結果はproject-records/security/にsecurity-scan-reportとして記録する
 - **Implementer Agent（implementer）**: src/ 配下にコードを実装する。設計文書に従い、Clean Architecture・DIPを遵守する。単体テストも作成する
@@ -159,6 +160,10 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - HW連携: [有効/無効] - 理由: [記載]
 - AI/LLM連携: [有効/無効] - 理由: [記載]
 - フレームワーク要件定義: [有効/無効] - 理由: [記載]
+- HW生産工程管理: [有効/無効] - 理由: [記載]
+- 製品i18n/l10n: [有効/無効] - 理由: [記載]
+- 認証取得: [有効/無効] - 理由: [記載]
+- 運用・保守: [有効/無効] - 理由: [記載]
 
 ## ドキュメントの基本形式 (MCBSMD)
 
