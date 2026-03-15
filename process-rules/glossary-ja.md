@@ -21,6 +21,9 @@
 | incident | incident | 本番環境で発生した計画外のサービス影響事象（ITIL, ISO 20000）。file_type: incident-report | 障害, インシデント | 英単語で統一。カタカナも不採用 |
 | hazard | hazard | failure が人命・財産・環境に害を及ぼしうる危険源（IEC 61508）。条件付きプロセス「機能安全」が有効な場合に使用 | ハザード | 英単語で統一 |
 | fault origin | fault origin | fault が混入したフェーズ。requirements fault / design fault / implementation fault の3分類（IEEE 1044）。defect の root cause analysis で使用 | — | 因果連鎖における fault の発生源を特定するための分類軸 |
+| HARA | HARA | Hazard Analysis and Risk Assessment（ISO 26262）。システムレベルで hazard を特定し safety goal を導出する分析手法。機能安全が有効な場合に必須 | — | トップダウン分析。詳細は [defect-taxonomy §7](defect-taxonomy-ja.md) |
+| FMEA | FMEA | Failure Mode and Effects Analysis（IEC 60812）。コンポーネントレベルで fault のモードと影響を網羅的に分析する手法 | — | ボトムアップ分析。Ch3 確定後に実施 |
+| FTA | FTA | Fault Tree Analysis（IEC 61025）。特定の top event から原因を AND/OR ゲートで逆探索する分析手法 | — | トップダウン分析。高リスク hazard または重大 incident の原因分析に使用 |
 | interview-record | インタビュー記録 | ユーザーインタビューの構造化記録（file_type） | hearing-record | 上記 interview の選定に連動 |
 | disaster-recovery-plan | 災害復旧計画 | RPO/RTO に基づく復旧手順の定義（file_type） | dr-plan | 名前空間の略称禁止ルールに従う |
 

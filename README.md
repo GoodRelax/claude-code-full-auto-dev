@@ -157,7 +157,7 @@ Phase 6: delivery（納品）
          └─ 最終レビュー・コンテナビルド・デプロイ・受入テスト手順書
 
 Phase 7: operation（運用・保守）
-         └─ インシデント管理・パッチ適用・SLA監視・災害復旧
+         └─ incident management・パッチ適用・SLA監視・災害復旧
 ```
 
 各フェーズには **review-agent による品質ゲート** が設けられており、Critical/High 指摘がゼロになるまで次フェーズへの移行がブロックされます。
