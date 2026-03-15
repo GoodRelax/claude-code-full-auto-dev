@@ -35,7 +35,7 @@
 | 3 | ANGS | AI-Native Graph Spec | GraphDB + Git（MDはビュー） | 大規模 |
 
 - テンプレート: process-rules/spec-template-ja.md
-- Phase 0でユーザーと規模を判断し、形式を決定する
+- setup フェーズでユーザーと規模を判断し、形式を決定する
 
 ## 技術スタック
 
@@ -104,22 +104,24 @@
 
 Agent Teamsで作業する場合、以下のロール定義を使用する:
 
-- **SRS Agent**: user-order.md（3問形式）+ process-rules/spec-template-ja.md を基に、ANMS形式の仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
-- **Architect Agent**: docs/spec/ の ANMS 仕様書 Ch3-6 を詳細化（Architecture・Specification・Test Strategy・Design Principles）。docs/api/ にOpenAPI仕様を生成する
-- **Security Agent**: docs/security/ にセキュリティ設計を作成。実装コードの脆弱性レビューを行う。スキャン結果はproject-records/security/に記録する
-- **Implementation Agent**: src/ 配下にコードを実装する。設計文書に従う
-- **Test Agent**: tests/ 配下にテストを作成・実行する。カバレッジレポートを生成する
-- **Review Agent**: project-records/reviews/ にレビュー報告を出力する。R1〜R6の観点（SW工学原則・並行性・パフォーマンス）でレビューし、Critical/High指摘がゼロになるまで次フェーズへの移行をブロックする
-- **PM Agent**: project-management/progress/ に進捗レポートを出力する。WBS/バグカーブ/コストを管理する
-- **Change Manager Agent**: 仕様書承認後の変更要求をproject-records/change-requests/に記録し、影響分析を行う。impact_level=highはユーザー承認必須
-- **Risk Manager Agent**: project-records/risks/にリスクエントリを記録し、risk-register.mdを管理する。score≧6はユーザーに通知
-- **License Checker Agent**: 依存ライブラリ追加時にライセンス互換性を確認し、帰属表示を管理する
+- **Lead Agent（orchestrator）**: プロジェクト全体のオーケストレーション。pipeline-state.md / executive-dashboard.md / final-report.md / decision記録を管理する。フェーズ遷移と品質ゲートを制御する。agents/にファイルを持たない他のエージェントとは異なり、Claude Code本体がこの役割を担う
+- **SRS Agent（srs-writer）**: user-order.md（3問形式）+ process-rules/spec-template-ja.md を基に、ANMS形式の仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
+- **Architect Agent（architect）**: docs/spec/ の ANMS 仕様書 Ch3-6 を詳細化（Architecture・Specification・Test Strategy・Design Principles）。docs/api/ にOpenAPI仕様を生成する
+- **Security Agent（security-reviewer）**: docs/security/ にセキュリティ設計を作成。実装コードの脆弱性レビューを行う。スキャン結果はproject-records/security/にsecurity-scan-reportとして記録する
+- **Implementer Agent（implementer）**: src/ 配下にコードを実装する。設計文書に従い、Clean Architecture・DIPを遵守する。単体テストも作成する
+- **Test Agent（test-engineer）**: tests/ 配下にテストを作成・実行する。カバレッジレポートを生成する
+- **Review Agent（review-agent）**: project-records/reviews/ にレビュー報告を出力する。R1〜R6の観点（SW工学原則・並行性・パフォーマンス）でレビューし、Critical/High指摘がゼロになるまで次フェーズへの移行をブロックする
+- **PM Agent（progress-monitor）**: project-management/progress/ に進捗レポートを出力する。WBS/バグカーブ/コストを管理する
+- **Change Manager Agent（change-manager）**: 仕様書承認後のユーザー起点の変更要求をproject-records/change-requests/に記録し、影響分析を行う。impact_level=highはユーザー承認必須。AI側の技術的変更はdefect/decisionで管理する
+- **Risk Manager Agent（risk-manager）**: project-records/risks/にリスクエントリを記録し、risk-register.mdを管理する。score≧6はユーザーに通知
+- **License Checker Agent（license-checker）**: 依存ライブラリ追加時にライセンス互換性を確認し、帰属表示を管理する
 
 ## 重要判断の基準
 
 以下の場合はユーザーに確認を求めること:
 
 - アーキテクチャに関する根本的な選択
+- 外部依存（HW/AI/フレームワーク）の選定（dependency-selection フェーズ）
 - 外部サービス/APIの選定
 - セキュリティモデルの重大な変更
 - 予算やスケジュールに影響する判断
@@ -139,14 +141,14 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 ## 必須プロセス設定（process-rules/full-auto-dev-process-rules-ja.md 第3章参照）
 
 - 変更管理: 仕様書承認後の変更はchange-managerエージェント経由で処理する
-- リスク管理: Phase 1完了時にリスク台帳を作成し、各フェーズ開始時に更新する
+- リスク管理: planning フェーズ完了時にリスク台帳を作成し、各フェーズ開始時に更新する
 - トレーサビリティ: 要件ID→設計ID→テストIDの対応をproject-records/traceability/に記録する
 - 問題管理: バグはproject-records/defects/に障害票として記録し、根本原因分析を行う
 - ライセンス管理: 依存ライブラリ追加時にlicense-checkerエージェントを実行する
 - 監査記録: 重要判断はproject-records/decisions/に記録する
 - コスト管理: APIトークン消費をproject-management/progress/cost-log.jsonに記録する
 
-## 条件付きプロセス（Phase 0で判断）
+## 条件付きプロセス（setup フェーズで判断）
 
 以下は該当する条件が存在する場合のみ有効化する:
 - 法規調査: [有効/無効] - 理由: [記載]
@@ -154,6 +156,9 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - 技術動向調査: [有効/無効] - 理由: [記載]
 - 機能安全(HARA/FMEA): [有効/無効] - 理由: [記載]
 - アクセシビリティ(WCAG 2.1): [有効/無効] - 理由: [記載]
+- HW連携: [有効/無効] - 理由: [記載]
+- AI/LLM連携: [有効/無効] - 理由: [記載]
+- フレームワーク要件定義: [有効/無効] - 理由: [記載]
 
 ## ドキュメントの基本形式 (MCBSMD)
 

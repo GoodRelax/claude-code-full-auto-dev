@@ -1,11 +1,11 @@
 以下のふりかえりを実施してください:
 
-1. docs/defects/ の障害票をすべて読み込む
+1. project-records/defects/ の障害票をすべて読み込む
 2. 繰り返し発生しているバグパターンを特定する
 3. 根本原因を分析する（CMMI CARプロセス）
 4. CLAUDE.mdのコーディング規約・チェック項目に再発防止策を追記する
 5. 関連するエージェント定義（.claude/agents/）を更新する
-6. docs/improvement/retrospective-{今日の日付}.md に分析結果を記録する
+6. project-records/improvement/retrospective-{今日の日付}.md に分析結果を記録する
 
 ## 再発防止策の記録形式
 - バグパターン: [パターンの説明]

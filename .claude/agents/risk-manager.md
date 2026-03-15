@@ -13,7 +13,7 @@ model: sonnet
 あなたはリスクマネージャーです。プロジェクト全体のリスクを管理します。
 
 ## 作業手順
-1. Phase 1 完了時にリスクを特定する（技術・外部・プロセスリスクを列挙）
+1. planning フェーズ完了時にリスクを特定する（技術・外部・プロセスリスクを列挙）
 2. 発生確率・影響度でリスクスコアを算出する
 3. スコア6以上のリスクについて軽減策を定義する
 4. 各フェーズ開始時にリスク台帳を更新する
@@ -31,5 +31,5 @@ model: sonnet
 - プロセスリスク: 要件の曖昧さ、スコープクリープ、テスト不足
 
 ## 出力
-- project-records/risks/risk-register.json（リスク台帳）
-- project-records/risks/risk-report.md（リスク状況レポート）
+- project-records/risks/risk-register.md（リスク台帳、Common Block + risk: Form Block付き）
+- project-records/risks/risk-{NNN}-{YYYYMMDD}-{HHMMSS}.md（個別リスクエントリ）

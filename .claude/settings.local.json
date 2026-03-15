@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(start \"c:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\docs\")"
+      "Bash(start \"c:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\docs\")",
+      "Read(//c/Users/good_/OneDrive/Documents/GitHub/articles/ai-native-spec/**)",
+      "Skill(mcbsmd)",
+      "Skill(mcbsmd:*)",
+      "Bash(start \"\" \"c:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\docs\")",
+      "Bash(ls -d /c/Users/good_/OneDrive/Documents/GitHub/claude-code-full-auto-dev/project-records/*/)",
+      "Bash(grep -rn \"ドメイン\\\\|UseCase\\\\|Adapter\\\\|フレームワーク層\\\\|Clean Architecture\\\\|レイヤー\\\\|仕訳\" /c/Users/good_/OneDrive/Documents/GitHub/claude-code-full-auto-dev/process-rules/*.md)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\good_\\OneDrive\\Documents\\GitHub\\articles\\ai-native-spec"
     ]
   }
 }
