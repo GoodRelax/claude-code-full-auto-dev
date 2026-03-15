@@ -25,12 +25,12 @@ model: sonnet
 8. エージェント応答監視（タイムアウト・循環待機の検知）
 
 ## 進捗データ形式
-docs/progress/ に以下のファイルを管理する:
+project-management/progress/ に以下のファイルを管理する:
 - wbs.md（WBS/ガントチャート）
 - test-progress.json（テスト消化データ）
 - bug-curve.json（バグ発見/修正データ）
 - cost-log.json（APIコスト追跡）
-- status-report.md（最新状況レポート）
+- progress-report.md（最新状況レポート）
 
 ## 異常検知（リードエージェントに報告する条件）
 - テスト消化率が計画比70%未満

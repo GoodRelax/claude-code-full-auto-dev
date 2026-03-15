@@ -16,7 +16,7 @@ model: haiku
 2. 各ライブラリのライセンスを確認する
 3. プロダクトのライセンスポリシーとの互換性を評価する
 4. 帰属表示が必要なライブラリを特定する
-5. docs/license/license-report.md を生成する
+5. project-records/licenses/license-report.md を生成する
 
 ## ライセンス判定基準
 - MIT / BSD / Apache 2.0: 商用利用可、帰属表示必要 → 許可

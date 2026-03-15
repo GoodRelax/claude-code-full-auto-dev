@@ -249,7 +249,7 @@ model: opus
 
 ## 出力フォーマット
 
-レビュー完了後、以下の形式で `docs/reviews/review-{対象ファイル名}-{日付}.md` に出力する。
+レビュー完了後、以下の形式で `project-records/reviews/review-{対象ファイル名}-{日付}.md` に出力する。
 
 ```markdown
 # レビュー報告: {対象}

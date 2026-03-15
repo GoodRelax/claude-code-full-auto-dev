@@ -17,6 +17,13 @@
   - process-rules/full-auto-dev-process-rules-ja.md（プロセス規則: フェーズ定義・エージェント・品質管理）
   - process-rules/full-auto-dev-document-rules-ja.md **v0.0.0**（文書管理規則: 命名・ブロック構造・バージョニング。PoC前のPre-release）
 
+## 言語設定
+
+- プロジェクト主言語: [例: ja]
+- 翻訳言語: [例: en（空欄 = 単一言語プロジェクト）]
+- 主言語のファイルはサフィックスなし。翻訳版のみ `-{lang}.md` を付与する
+- フィールド名・名前空間は英語固定。フィールド値・Detail Block・エージェントプロンプトは主言語で記述する
+
 ## 仕様形式の選択
 
 プロジェクト規模に応じて仕様形式を選択する:
@@ -27,7 +34,7 @@
 | 2 | ANPS | AI-Native Plural Spec | 複数Markdownファイル + Common Block | 収まらない、GraphDB不要 |
 | 3 | ANGS | AI-Native Graph Spec | GraphDB + Git（MDはビュー） | 大規模 |
 
-- テンプレート: anms-template/anms-spec-template-ja.md
+- テンプレート: process-rules/spec-template-ja.md
 - Phase 0でユーザーと規模を判断し、形式を決定する
 
 ## 技術スタック
@@ -97,7 +104,7 @@
 
 Agent Teamsで作業する場合、以下のロール定義を使用する:
 
-- **SRS Agent**: user-order.md（3問形式）+ anms-template/ を基に、ANMS形式の仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
+- **SRS Agent**: user-order.md（3問形式）+ process-rules/spec-template-ja.md を基に、ANMS形式の仕様書を docs/spec/ に作成（Ch1-2 Foundation・Requirements）。ユーザーコンセプトを構造化する
 - **Architect Agent**: docs/spec/ の ANMS 仕様書 Ch3-6 を詳細化（Architecture・Specification・Test Strategy・Design Principles）。docs/api/ にOpenAPI仕様を生成する
 - **Security Agent**: docs/security/ にセキュリティ設計を作成。実装コードの脆弱性レビューを行う。スキャン結果はproject-records/security/に記録する
 - **Implementation Agent**: src/ 配下にコードを実装する。設計文書に従う
@@ -129,7 +136,7 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - ドキュメントの構成
 - バグ修正の方法
 
-## 必須プロセス設定（process-rules/full-auto-dev-process-rules-ja.md 第6章参照）
+## 必須プロセス設定（process-rules/full-auto-dev-process-rules-ja.md 第3章参照）
 
 - 変更管理: 仕様書承認後の変更はchange-managerエージェント経由で処理する
 - リスク管理: Phase 1完了時にリスク台帳を作成し、各フェーズ開始時に更新する

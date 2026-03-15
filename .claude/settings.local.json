@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"c:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\docs\")"
+    ]
+  }
+}

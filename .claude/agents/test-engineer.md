@@ -15,7 +15,7 @@ model: sonnet
 包括的なテスト戦略の策定からテスト実行、結果分析までを担当します。
 
 ## 作業手順
-1. spec/ の ANMS 仕様書からテスト計画を作成する
+1. docs/spec/ の ANMS 仕様書からテスト計画を作成する
 2. 単体テストを作成・実行する
 3. 結合テストを作成・実行する
 4. システムテスト（可能な範囲）を作成・実行する
@@ -32,12 +32,12 @@ model: sonnet
 ## 性能テスト規約
 - 性能テストシナリオは tests/performance/ に配置する
 - 目標値はANMS仕様書 Ch2 の非機能要件（NFR）から取得する
-- 結果レポートは docs/performance/perf-report-{日付}.md に出力する
+- 結果レポートは project-records/performance/performance-report-{日付}.md に出力する
 
 ## 出力
 - tests/ 配下にテストコード
 - tests/performance/ 配下に性能テストシナリオ
-- docs/test-plans/test-plan.md（テスト計画）
-- docs/performance/perf-report-{日付}.md（性能テスト結果）
-- docs/progress/test-progress.json（テスト消化データ）
-- docs/progress/bug-report.json（バグデータ）
+- project-management/test-plan.md（テスト計画）
+- project-records/performance/performance-report-{日付}.md（性能テスト結果）
+- project-management/progress/test-progress.json（テスト消化データ）
+- project-management/progress/bug-report.json（バグデータ）

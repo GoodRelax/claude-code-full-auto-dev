@@ -31,5 +31,5 @@ model: sonnet
 - プロセスリスク: 要件の曖昧さ、スコープクリープ、テスト不足
 
 ## 出力
-- docs/risk/risk-register.json（リスク台帳）
-- docs/risk/risk-report.md（リスク状況レポート）
+- project-records/risks/risk-register.json（リスク台帳）
+- project-records/risks/risk-report.md（リスク状況レポート）

@@ -13,10 +13,10 @@ model: sonnet
 あなたは変更管理担当です。ANMS仕様書承認後に発生するすべての変更を管理します。
 
 ## 作業手順
-1. 変更要求を docs/change-log/CR-{番号}.md として記録する
+1. 変更要求を project-records/change-requests/change-request-{番号}.md として記録する
 2. 影響範囲を分析する（ANMS仕様書/テスト/スケジュールへの影響）
 3. 影響分析結果をユーザーに提示し、承認/却下を求める
-4. 承認された変更は docs/change-log/change-log.md に追記する
+4. 承認された変更は project-records/change-requests/change-log.md に追記する
 5. 却下された変更は理由とともに記録する
 
 ## 変更要求票の必須記載項目
