@@ -1,206 +1,92 @@
-# Claude Code ほぼ全自動ソフトウェア開発テンプレート
+# Nearly Fully Automated Software Development Template
 
-Claude Code のサブエージェント機能とカスタムコマンドを活用して、ソフトウェア開発プロセスを**ほぼ全自動化**するためのプロジェクトテンプレートです。
+[Japanese version available here](README-ja.md)
 
-## 概要
+A project template that **nearly fully automates** the software development process using AI coding agent multi-agent capabilities. The user only does three things: describe the concept, make key decisions, and accept the deliverables.
 
-「ほぼ全自動」とは、人間（ユーザー）の作業を以下の **3つのみ** に絞り込み、残りすべてを Claude Code およびそのサブエージェント群に委任するアプローチです。
+## AI Platform Support
 
-| # | ユーザーが担当する作業 |
-|---|----------------------|
-| 1 | ソフトウェアのコンセプト・要求の提示 |
-| 2 | 開発中の重要な判断（分岐点での意思決定） |
-| 3 | 完成物の受入テスト（確認と承認） |
+Default configuration targets **Claude Code** (Anthropic), but the framework is portable to other AI coding agents.
 
-## 仕様書フォーマット: 三段階仕様体系（ANMS / ANPS / ANGS）
+| Status | Platform |
+|---|---|
+| Ready to use | Claude Code |
+| Porting guide available | OpenAI Codex CLI, Gemini CLI, Cursor, Windsurf, Cline, Roo Code, Aider |
 
-本テンプレートはプロジェクト規模に応じた三段階の仕様体系を採用しています。いずれも EARS・Gherkin・Mermaid を **STFB（Stable Top, Flexible Bottom）** 構成で組み合わせた設計原則を共有します。
+**Tell your AI to read the [Porting Guide](process-rules/porting-guide-en.md) and auto-convert.** If it can't handle that, it can't handle this framework.
 
-| Level | 略称 | 正式名称 | 規模 |
-|:-----:|------|----------|------|
-| 1 | ANMS | AI-Native Minimal Spec | 1コンテキストウィンドウに収まる |
-| 2 | ANPS | AI-Native Plural Spec | 収まらない、GraphDB不要（中規模） |
-| 3 | ANGS | AI-Native Graph Spec | 大規模（GraphDB活用） |
+## Language Support
 
-```
-user-order.md（3問形式: 何を？ どうして？ その他の希望）
-    ↓ setup フェーズ: AI が CLAUDE.md を提案
-    ↓ srs-writer エージェント + process-rules/spec-template-ja.md
-docs/spec/[project-name]-spec.md（正式仕様書、形式はsetupフェーズで選定）
-    ↓ architect エージェント
-docs/spec/[project-name]-spec.md（Ch3-6 詳細化済み）
-    ↓ 実装・テスト・レビュー
-src/ + tests/（コード・テスト）
-```
+Default language is English (`-en.md`). Japanese (`-ja.md`) is also included.
 
-詳細は [essays/](essays/) を参照してください。
+To switch to another language, delete the unwanted suffix files and have your AI translate the rest. See [Switching Language](#switching-language) for details.
 
-## クイックスタート
+> Both English and Japanese are maintained in this repository. Consistency between languages is verified by AI agents before each release.
 
-### 1. このリポジトリをテンプレートとして使う
+## Quick Start
+
+### 1. Install
 
 ```bash
 git clone https://github.com/your-username/claude-code-full-auto-dev.git my-project
 cd my-project
 ```
 
-### 2. `user-order.md` に3つの問いに答える
+### 2. Switch AI platform (skip if using Claude Code)
+
+Have your AI read the [Porting Guide](process-rules/porting-guide-en.md) and auto-convert. See [Switching AI Platform](#switching-ai-platform) for details.
+
+### 3. Switch language (skip if using English)
+
+Delete unwanted language files and have your AI translate the rest. See [Switching Language](#switching-language) for details.
+
+### 4. Describe what you want to build
+
+Write your concept in `user-order.md`:
 
 ```markdown
-# 作りたいもの
+# What I want to build
 
-## 何を作りたい？
-チームのタスクを管理できるWebアプリ。タスクの作成・担当者割当・期限設定ができて、ダッシュボードで進捗が見えるようにしたい。
+## What?
+A web app for managing team tasks — create tasks, assign members, set deadlines, and view progress on a dashboard.
 
-## それはどうして？
-チームの作業が属人化しており、誰が何をしているかわからない。Excelでの管理が限界。
+## Why?
+Work is siloed across individuals and no one knows who is doing what. Excel-based tracking has hit its limits.
 
-## その他の希望
-Webで使いたい。スマホからも確認できるとうれしい。
+## Other preferences
+Web-based. Mobile-friendly would be nice.
 ```
 
-プロジェクト名・技術スタック・CLAUDE.md は setup フェーズで AI が提案するので、ユーザーが事前に用意する必要はありません。
-
-### 3. 全自動開発を開始する
-
-Claude Code を起動し、カスタムコマンドを実行します。
+### 5. Launch
 
 ```
 /full-auto-dev
 ```
 
-setup フェーズで AI が CLAUDE.md を提案・配置した後、planning フェーズでユーザーへの構造化インタビューを実施し、srs-writer エージェントが `user-order.md` + インタビュー結果 + `process-rules/spec-template-ja.md` を基に仕様書を `docs/spec/` に生成し、以降のフェーズが自動で進行します。
+The AI proposes a project configuration, conducts a structured interview, generates a specification, and proceeds through design, implementation, testing, and delivery — all automatically.
 
-## ディレクトリ構成
+## Switching AI Platform
 
-```
-.
-├── CLAUDE.md                        # Claude Code への指示（setup フェーズでAIが提案）
-├── user-order.md                    # 作りたいもの（ユーザーが3問に回答）
-├── executive-dashboard.md           # プロジェクト全体ダッシュボード
-├── final-report.md                  # プロジェクト総括レポート（delivery フェーズ）
-│
-├── process-rules/                   # 運用規則（フレームワーク定義）
-│   ├── full-auto-dev-process-rules-ja.md   # プロセス規則
-│   ├── full-auto-dev-document-rules-ja.md  # 文書管理規則 v0.0.0
-│   ├── agent-list-ja.md             # エージェント一覧
-│   ├── prompt-structure-ja.md       # プロンプト構造規約（S0-S6）
-│   ├── glossary-ja.md               # 用語集
-│   ├── review-standards-ja.md       # レビュー観点規約（R1-R6）
-│   ├── spec-template-ja.md          # 仕様書テンプレート（日本語）
-│   └── spec-template-en.md          # 仕様書テンプレート（英語）
-│
-├── essays/                          # 論文・設計根拠（日英）
-│
-├── .claude/
-│   ├── agents/                      # サブエージェント定義（12エージェント）
-│   └── commands/                    # カスタムコマンド定義
-│
-├── project-management/              # オーケストレーション + PM成果物
-│   ├── pipeline-state.md            # パイプライン状態
-│   ├── interview-record.md            # インタビュー記録
-│   ├── handoff/                     # エージェント間引継ぎ
-│   └── progress/                    # 進捗・WBS・コスト
-│
-├── docs/                            # 設計成果物
-│   ├── spec/                        # 仕様書（ANMS/ANPS形式）
-│   ├── api/                         # OpenAPI仕様
-│   ├── security/                    # セキュリティ設計
-│   └── observability/               # 可観測性設計
-│
-├── project-records/                 # プロセス記録（監査証跡）
-│   ├── reviews/                     # レビュー報告
-│   ├── decisions/                   # 意思決定記録
-│   ├── risks/                       # リスク台帳
-│   ├── defects/                     # defect 票
-│   ├── change-requests/             # 変更要求
-│   ├── traceability/                # トレーサビリティ
-│   ├── security/                    # スキャン結果
-│   ├── licenses/                    # ライセンスレポート
-│   └── performance/                 # 性能テスト結果
-│
-├── src/                             # 実装コード（自動生成）
-├── tests/                           # テストコード（自動生成）
-└── infra/                           # IaC (Infrastructure as Code)
-```
+If you are not using Claude Code, have your AI read [`process-rules/porting-guide-en.md`](process-rules/porting-guide-en.md) and auto-convert. Roughly:
 
-## カスタムコマンド
+- ~70% of files are portable — no changes needed
+- ~15% require find-and-replace (vendor names, model names, paths)
+- ~15% require format conversion (YAML frontmatter only — prompt body is reusable)
 
-| コマンド | 説明 |
-|---------|------|
-| `/full-auto-dev` | `user-order.md` を読み込み、CLAUDE.md提案 → setup〜delivery フェーズの全自動開発を開始する |
-| `/check-progress` | 現在の開発進捗（WBS・defect curve・カバレッジ）を報告する |
-| `/retrospective` | スプリント/フェーズのふりかえりを実施する |
+## Switching Language
 
-## 開発フェーズ
+1. Delete all files with the unwanted language suffix (e.g., `-ja.md`)
+2. Have your AI translate the remaining `-en.md` files to your target language (e.g., `-vi.md`)
 
-```
-Phase 0: setup（条件評価・CLAUDE.md）
-         └─ 法規・特許・機能安全・アクセシビリティの要否判断、CLAUDE.md提案
+Files without a language suffix (`CLAUDE.md`, `.claude/agents/*.md`, etc.) do not need translation.
 
-Phase 1: planning（インタビュー＆仕様）
-         └─ 構造化インタビュー → 仕様書 Ch1-2 作成 → ユーザー承認
+## Documentation
 
-Phase 2: dependency-selection（外部依存の評価・選定・調達）
-         └─ HW・AI・フレームワーク等の外部依存を評価・選定
+- [Process Rules](process-rules/full-auto-dev-process-rules-ja.md) — Phase definitions, agents, quality gates
+- [Document Rules](process-rules/full-auto-dev-document-rules-ja.md) v0.0.0 — Naming, block structure, versioning
+- [Porting Guide](process-rules/porting-guide-en.md) — How to convert to other AI platforms
+- [Spec Format & Design Rationale](essays/) — ANMS / ANPS / ANGS three-tier spec system
 
-Phase 3: design（設計）
-         └─ 仕様書 Ch3-6 詳細化・OpenAPI仕様・セキュリティ設計・WBS・リスク台帳
+## License
 
-Phase 4: implementation（実装）
-         └─ コード実装（git worktree 並列）・単体テスト・セキュリティスキャン
-
-Phase 5: testing（テスト）
-         └─ 結合テスト・性能テスト・テスト消化曲線・defect curve更新
-
-Phase 6: delivery（納品）
-         └─ 最終レビュー・コンテナビルド・デプロイ・受入テスト手順書
-
-Phase 7: operation（運用・保守）
-         └─ incident management・パッチ適用・SLA監視・災害復旧
-```
-
-各フェーズには **review-agent による品質ゲート** が設けられており、Critical/High 指摘がゼロになるまで次フェーズへの移行がブロックされます。
-
-## エージェント構成
-
-| エージェント | モデル | 役割 |
-|------------|-------|------|
-| lead | Opus | プロジェクト全体のオーケストレーション、フェーズ遷移制御、意思決定記録 |
-| srs-writer | Opus | インタビュー実施 → 仕様書（Ch1-2: Foundation・Requirements）を作成 |
-| architect | Opus | 仕様書 Ch3-6 を詳細化し、OpenAPI仕様を作成 |
-| security-reviewer | Opus | OWASP Top 10 準拠のセキュリティ設計・脆弱性レビュー |
-| implementer | Opus | 設計文書に基づきソースコードを実装、単体テスト作成 |
-| test-engineer | Sonnet | テスト作成・実行・カバレッジ計測・性能テスト（k6） |
-| review-agent | Opus | R1〜R6観点（要求品質・設計原則・コーディング品質・並行性・パフォーマンス・テスト品質）でレビュー |
-| progress-monitor | Sonnet | WBS管理・defect curve監視・コスト追跡 |
-| change-manager | Sonnet | 仕様書承認後の変更要求管理 |
-| risk-manager | Sonnet | リスク台帳の作成・更新・軽減策管理 |
-| license-checker | Haiku | 依存ライブラリのOSSライセンス確認 |
-| kotodama-kun | Haiku | 用語・命名の整合性チェック |
-
-## 品質基準
-
-| 項目 | 目標値 |
-|------|-------|
-| テストカバレッジ | 80% 以上 |
-| 単体テスト合格率 | 95% 以上 |
-| 結合テスト合格率 | 100% |
-| Critical/High 指摘 | 0件（次フェーズ移行条件） |
-| セキュリティスキャン Critical/High | 0件 |
-
-## 前提条件
-
-- [Claude Code](https://claude.ai/code) がインストール済みであること
-- Claude Pro / Team / Enterprise サブスクリプション、または Anthropic API アカウント
-
-## 運用規則
-
-全機能の詳細な説明は以下を参照してください。
-
-- [プロセス規則](process-rules/full-auto-dev-process-rules-ja.md) — フェーズ定義・エージェント・品質管理
-- [文書管理規則](process-rules/full-auto-dev-document-rules-ja.md) v0.0.0 — 命名・ブロック構造・バージョニング
-
-## ライセンス
-
-[LICENSE](LICENSE) を参照してください。
+© 2026 GoodRelax. MIT License. See [LICENSE](LICENSE).

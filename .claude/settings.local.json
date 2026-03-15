@@ -17,10 +17,14 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:www.augmentcode.com)",
       "WebFetch(domain:deepwiki.com)",
-      "Bash(start \"\" \"C:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\essays\\\\research\")"
+      "Bash(start \"\" \"C:\\\\Users\\\\good_\\\\OneDrive\\\\Documents\\\\GitHub\\\\claude-code-full-auto-dev\\\\essays\\\\research\")",
+      "WebFetch(domain:zenn.dev)",
+      "Bash(grep -i \"model:\" /c/Users/good_/OneDrive/Documents/GitHub/claude-code-full-auto-dev/.claude/agents/*.md)",
+      "Bash(grep -i \"claude\\\\|anthropic\" /c/Users/good_/OneDrive/Documents/GitHub/claude-code-full-auto-dev/process-rules/*.md)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\good_\\OneDrive\\Documents\\GitHub\\articles\\ai-native-spec"
+      "C:\\Users\\good_\\OneDrive\\Documents\\GitHub\\articles\\ai-native-spec",
+      "c:\\Users\\good_\\OneDrive\\Documents\\GitHub\\claude-code-full-auto-dev\\.claude\\agents"
     ]
   }
 }
