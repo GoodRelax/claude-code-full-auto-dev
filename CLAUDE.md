@@ -58,7 +58,7 @@
 - メインブランチ: main（直接コミット禁止）
 - 開発ブランチ: develop（統合ブランチ）
 - 機能ブランチ: feature/{issue番号}-{説明}（develop から分岐）
-- バグ修正ブランチ: fix/{issue番号}-{説明}
+- 障害修正ブランチ: fix/{issue番号}-{説明}
 - リリースブランチ: release/v{バージョン}（develop から分岐）
 - PRマージ: develop → main は review-agent PASS 後にのみ許可
 - Agent Teams の並列実装: git worktree を使用し、各エージェントは専用ブランチで作業
@@ -120,6 +120,7 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - **Change Manager Agent（change-manager）**: 仕様書承認後のユーザー起点の変更要求をproject-records/change-requests/に記録し、影響分析を行う。impact_level=highはユーザー承認必須。AI側の技術的変更はdefect/decisionで管理する
 - **Risk Manager Agent（risk-manager）**: project-records/risks/にリスクエントリを記録し、risk-register.mdを管理する。score≧6はユーザーに通知
 - **License Checker Agent（license-checker）**: 依存ライブラリ追加時にライセンス互換性を確認し、帰属表示を管理する
+- **Kotodama-kun Agent（kotodama-kun）**: 成果物の用語・命名がフレームワーク用語集およびプロジェクト用語集に準拠しているかチェックする
 
 ## 重要判断の基準
 
@@ -141,14 +142,14 @@ Agent Teamsで作業する場合、以下のロール定義を使用する:
 - コードのリファクタリング方針
 - テストケースの設計
 - ドキュメントの構成
-- バグ修正の方法
+- 障害修正の方法
 
 ## 必須プロセス設定（process-rules/full-auto-dev-process-rules-ja.md 第3章参照）
 
 - 変更管理: 仕様書承認後の変更はchange-managerエージェント経由で処理する
 - リスク管理: planning フェーズ完了時にリスク台帳を作成し、各フェーズ開始時に更新する
 - トレーサビリティ: 要求ID→設計ID→テストIDの対応をproject-records/traceability/に記録する
-- 問題管理: バグはproject-records/defects/に障害票として記録し、根本原因分析を行う
+- 問題管理: 障害はproject-records/defects/に障害票として記録し、根本原因分析を行う
 - ライセンス管理: 依存ライブラリ追加時にlicense-checkerエージェントを実行する
 - 監査記録: 重要判断はproject-records/decisions/に記録する
 - コスト管理: APIトークン消費をproject-management/progress/cost-log.jsonに記録する
