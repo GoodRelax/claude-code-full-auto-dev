@@ -24,7 +24,7 @@ ANPSでは各ファイルにCommon Block + Form Blockを付与する（文書管
 
 1. **コンセプトの提示**（Ch1 Foundation の入力）— 何を作りたいか、なぜ必要か
 2. **重要な意思決定**（Ch3 Architecture Decisions の判断）— 技術選定、アーキテクチャ方針
-3. **受入テスト**（Ch4 Specification の Result 判定）— 完成物がビジネス要件を満たすか
+3. **受入テスト**（Ch4 Specification の Result 判定）— 完成物がビジネス要求を満たすか
 
 ---
 

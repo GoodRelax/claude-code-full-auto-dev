@@ -12,7 +12,7 @@
 |:-:|------|------|:-----:|------------|
 | 1 | lead | プロジェクト全体のオーケストレーション、フェーズ遷移制御、意思決定記録 | opus | 全フェーズ |
 | 2 | srs-writer | ユーザーコンセプトの構造化、インタビュー、仕様書 Ch1-2 作成 | opus | planning |
-| 3 | architect | 仕様書 Ch3-6 詳細化、OpenAPI・可観測性・外部依存要件の設計 | opus | design |
+| 3 | architect | 仕様書 Ch3-6 詳細化、OpenAPI・可観測性・外部依存要求の設計 | opus | design |
 | 4 | security-reviewer | 脅威モデリング、セキュリティ設計、脆弱性スキャン | opus | design, implementation |
 | 5 | implementer | ソースコード実装、単体テスト作成 | opus | implementation |
 | 6 | test-engineer | テスト計画・実行、カバレッジ計測、性能テスト | sonnet | testing |
@@ -21,6 +21,7 @@
 | 9 | change-manager | ユーザー起点の変更要求の受付・影響分析・記録 | sonnet | planning 以降（仕様承認後） |
 | 10 | risk-manager | リスク特定・評価・監視、リスク台帳管理 | sonnet | planning 以降 |
 | 11 | license-checker | OSS ライセンス互換性確認、帰属表示管理 | haiku | implementation, delivery |
+| 12 | kotodama-kun | 用語・命名の整合性チェック（フレームワーク用語集 + プロジェクト用語集） | haiku | 全フェーズ（Out 生成時） |
 
 ---
 
@@ -59,7 +60,7 @@
 | hw-requirement-spec | docs/hardware/ | 単 | design（条件付き） |
 | ai-requirement-spec | docs/ai/ | 単 | design（条件付き） |
 | framework-requirement-spec | docs/framework/ | 単 | design（条件付き） |
-| dr-plan | docs/operations/ | 単 | design |
+| disaster-recovery-plan | docs/operations/ | 単 | design |
 
 ### security-reviewer
 
@@ -140,11 +141,14 @@ flowchart TD
     CM["change-manager"]
     RM["risk-manager"]
     Lic["license-checker"]
+    Koto["kotodama-kun"]
 
     User -->|"user-order"| SRS
-    SRS -->|"spec-foundation<br/>interview-record"| Arch
+    SRS -->|"spec-foundation<br/>interview-record"| Koto
+    Koto -->|"用語チェック済"| Arch
     SRS -->|"spec-foundation"| Rev
-    Arch -->|"spec-architecture<br/>observability-design"| Impl
+    Arch -->|"spec-architecture<br/>observability-design"| Koto
+    Koto -->|"用語チェック済"| Impl
     Arch -->|"spec-architecture"| Rev
     Arch -->|"spec-architecture"| Sec
     Sec -->|"threat-model<br/>security-architecture"| Impl
@@ -158,6 +162,7 @@ flowchart TD
     RM -->|"risk"| Lead
     CM -->|"change-request"| Lead
     Lic -->|"license-report"| Lead
+    Koto -->|"用語指摘"| Lead
     Lead -->|"decision"| Arch
     Lead -->|"executive-dashboard<br/>final-report"| User
     User -->|"変更要求"| CM
@@ -174,6 +179,7 @@ flowchart TD
     style CM fill:#d5dbdb,stroke:#333,color:#000
     style RM fill:#d5dbdb,stroke:#333,color:#000
     style Lic fill:#d5dbdb,stroke:#333,color:#000
+    style Koto fill:#af7ac5,stroke:#333,color:#fff
 ```
 
 上図はプロセス規約から導出したエージェント間のデータフローを示す。矢印のラベルは受け渡される file_type。色はフェーズの早さに対応: 橙（全フェーズ）→ ゴールド（planning/design）→ 緑（implementation/testing）→ 灰（プロセス管理）。
@@ -187,12 +193,12 @@ flowchart TD
 | フェーズ | 起動されるエージェント | 品質ゲート |
 |---------|---------------------|-----------|
 | setup | lead | CLAUDE.md 承認 |
-| planning | lead, srs-writer, review-agent | R1 PASS → 仕様書承認 |
-| dependency-selection | lead, architect, license-checker | ユーザー選定承認 |
-| design | lead, architect, security-reviewer, progress-monitor, risk-manager, review-agent | R2/R4/R5 PASS |
-| implementation | lead, implementer, test-engineer(単体), security-reviewer(SCA), license-checker, review-agent, progress-monitor | R2/R3/R4/R5 PASS, SCA クリア |
-| testing | lead, test-engineer, review-agent, progress-monitor | R6 PASS, 全テスト PASS |
-| delivery | lead, review-agent, license-checker | R1-R6 全 PASS, ユーザー受入 |
+| planning | lead, srs-writer, kotodama-kun, review-agent | R1 PASS → 仕様書承認 |
+| dependency-selection | lead, architect, kotodama-kun, license-checker | ユーザー選定承認 |
+| design | lead, architect, security-reviewer, kotodama-kun, progress-monitor, risk-manager, review-agent | R2/R4/R5 PASS |
+| implementation | lead, implementer, test-engineer(単体), security-reviewer(SCA), kotodama-kun, license-checker, review-agent, progress-monitor | R2/R3/R4/R5 PASS, SCA クリア |
+| testing | lead, test-engineer, kotodama-kun, review-agent, progress-monitor | R6 PASS, 全テスト PASS |
+| delivery | lead, kotodama-kun, review-agent, license-checker | R1-R6 全 PASS, ユーザー受入 |
 | operation | lead, security-reviewer(パッチ), progress-monitor | SLA 達成 |
 
 ---
